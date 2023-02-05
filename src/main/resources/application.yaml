@@ -1,8 +1,13 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/university-scheduler
+    url: jdbc:postgresql://localhost:5433/university-scheduler
     username: postgres
-    password: 1234
+    password: postgres
   jpa:
     hibernate:
       ddl-auto: update
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false

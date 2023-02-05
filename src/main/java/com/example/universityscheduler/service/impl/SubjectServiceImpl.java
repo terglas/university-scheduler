@@ -2,7 +2,7 @@ package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.Subject;
 import com.example.universityscheduler.domain.dto.SubjectDTO;
-import com.example.universityscheduler.exception.DataBaseRuntimeException;
+import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.SubjectMapper;
 import com.example.universityscheduler.repository.SubjectRepository;
 import com.example.universityscheduler.service.SubjectService;
@@ -35,7 +35,7 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectDTO findById(UUID id) {
         Optional<Subject> optionalSubject = subjectRepository.findById(id);
         if(optionalSubject.isEmpty()) {
-            throw new DataBaseRuntimeException(String.format("subject not found: %S", id));
+            throw new NotFoundException(String.format("subject not found: %S", id));
         }
         return SubjectMapper.INSTANCE.toDto(optionalSubject.get());
     }

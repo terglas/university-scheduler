@@ -11,4 +11,6 @@ public interface TeacherService {
     TeacherDTO save(TeacherDTO teacherDTO);
     TeacherDTO findById(UUID id);
     Page<TeacherDTO> findAll(Pageable pageable);
+    TeacherDTO update(TeacherDTO teacherDTO);
+    void delete(UUID id);
 }

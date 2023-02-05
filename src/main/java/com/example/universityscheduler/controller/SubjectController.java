@@ -21,25 +21,17 @@ public class SubjectController {
         this.subjectService = subjectService;
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<SubjectDTO> save(@RequestBody SubjectDTO subjectDTO) {
-        try {
-            SubjectDTO savedSubjectDto = subjectService.save(subjectDTO);
-            URI location = UriComponentsBuilder.fromPath("/subjects/id").buildAndExpand(savedSubjectDto.getId()).toUri();
-            return ResponseEntity.created(location).body(savedSubjectDto);
-        } catch(Exception e) {
-            return ResponseEntity.unprocessableEntity().build();
-        }
+        SubjectDTO savedSubjectDto = subjectService.save(subjectDTO);
+        URI location = UriComponentsBuilder.fromPath("/subjects/id").buildAndExpand(savedSubjectDto.getId()).toUri();
+        return ResponseEntity.created(location).body(savedSubjectDto);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<SubjectDTO> findById(@PathVariable UUID id) {
-        try {
-            SubjectDTO subjectDto = subjectService.findById(id);
-            return ResponseEntity.ok(subjectDto);
-        } catch(Exception e) {
-            return ResponseEntity.notFound().header("Message",e.getMessage()).build();
-        }
+        SubjectDTO subjectDto = subjectService.findById(id);
+        return ResponseEntity.ok(subjectDto);
     }
 
     @GetMapping

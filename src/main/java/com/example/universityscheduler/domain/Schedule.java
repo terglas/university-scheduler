@@ -24,6 +24,7 @@ public class Schedule {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private Teacher teacher;
+    private String room;
     private Week week;
     private LocalTime startTime;
     private LocalTime endTime;

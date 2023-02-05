@@ -2,7 +2,7 @@ package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.Teacher;
 import com.example.universityscheduler.domain.dto.TeacherDTO;
-import com.example.universityscheduler.exception.DataBaseRuntimeException;
+import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.TeacherMapper;
 import com.example.universityscheduler.repository.TeacherRepository;
 import com.example.universityscheduler.service.TeacherService;
@@ -33,10 +33,29 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public TeacherDTO update(TeacherDTO teacherDTO) {
+        Teacher teacher = teacherRepository.findById(teacherDTO.getId()).orElseThrow(() -> {
+            throw new NotFoundException(String.format("Teacher not found: %S", teacherDTO.getId()));
+        });
+        TeacherMapper.INSTANCE.updateTeacherFromDto(teacherDTO, teacher);
+        Teacher createdTeacher = teacherRepository.save(teacher);
+        return TeacherMapper.INSTANCE.toDto(createdTeacher);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        Teacher teacher = teacherRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException(String.format("Teacher not found: %S", id));
+        });
+        teacherRepository.delete(teacher);
+    }
+
+
+    @Override
     public TeacherDTO findById(UUID id) {
         Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
         if(optionalTeacher.isEmpty()) {
-            throw new DataBaseRuntimeException(String.format("teacher not found: %S", id));
+            throw new NotFoundException(String.format("teacher not found: %S", id));
         }
         return TeacherMapper.INSTANCE.toDto(optionalTeacher.get());
     }
