@@ -32,6 +32,24 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    public SubjectDTO update(SubjectDTO subjectDTO) {
+        Subject subject = subjectRepository.findById(subjectDTO.getId()).orElseThrow(() -> {
+            throw new NotFoundException(String.format("Subject not found: %S", subjectDTO.getId()));
+        });
+        SubjectMapper.INSTANCE.updateSubjectFromDto(subjectDTO, subject);
+        Subject createdSubject = subjectRepository.save(subject);
+        return SubjectMapper.INSTANCE.toDto(createdSubject);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        Subject subject = subjectRepository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException(String.format("Subject not found: %S", id));
+        });
+        subjectRepository.delete(subject);
+    }
+
+    @Override
     public SubjectDTO findById(UUID id) {
         Optional<Subject> optionalSubject = subjectRepository.findById(id);
         if(optionalSubject.isEmpty()) {

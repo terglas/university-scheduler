@@ -38,8 +38,7 @@ public class TeacherController {
     @PutMapping
     public ResponseEntity<TeacherDTO> update(@RequestBody TeacherDTO teacherDTO) {
         TeacherDTO savedTeacherDto = teacherService.update(teacherDTO);
-        URI location = UriComponentsBuilder.fromPath("/teachers/id").buildAndExpand(savedTeacherDto.getId()).toUri();
-        return ResponseEntity.created(location).body(savedTeacherDto);
+        return ResponseEntity.ok(savedTeacherDto);
     }
 
     @DeleteMapping("/{id}")

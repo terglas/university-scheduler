@@ -28,6 +28,18 @@ public class SubjectController {
         return ResponseEntity.created(location).body(savedSubjectDto);
     }
 
+    @PutMapping
+    public ResponseEntity<SubjectDTO> update(@RequestBody SubjectDTO subjectDTO) {
+        SubjectDTO savedSubjectDto = subjectService.update(subjectDTO);
+        return ResponseEntity.ok(savedSubjectDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<SubjectDTO> deleteById(@PathVariable UUID id) {
+        subjectService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/{id}")
     public ResponseEntity<SubjectDTO> findById(@PathVariable UUID id) {
         SubjectDTO subjectDto = subjectService.findById(id);

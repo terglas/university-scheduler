@@ -11,4 +11,6 @@ public interface SubjectService {
     SubjectDTO save(SubjectDTO subjectDTO);
     SubjectDTO findById(UUID id);
     Page<SubjectDTO> findAll(Pageable pageable);
+    SubjectDTO update(SubjectDTO subjectDTO);
+    void delete(UUID id);
 }
