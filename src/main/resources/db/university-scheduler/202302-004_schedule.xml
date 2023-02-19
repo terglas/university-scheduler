@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20230219153454-1" author="amiroxumbayev">
+        <preConditions>
+            <not>
+                <tableExists tableName="schedule"/>
+            </not>
+        </preConditions>
+        <createTable tableName="schedule">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="room" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="week" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="teacher_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="schedule"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153454-2" author="amiroxumbayev">
+        <addForeignKeyConstraint baseTableName="schedule" baseColumnNames="subject_id"
+                                 referencedTableName="subject" referencedColumnNames="id"
+                                 constraintName="schedule_subject_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="20230219153454-3" author="amiroxumbayev">
+        <addForeignKeyConstraint baseTableName="schedule" baseColumnNames="teacher_id"
+                                 referencedTableName="teacher" referencedColumnNames="id"
+                                 constraintName="schedule_teacher_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>

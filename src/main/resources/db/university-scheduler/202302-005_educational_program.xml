@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20230219153455-1" author="amiroxumbayev">
+        <preConditions>
+            <not>
+                <tableExists tableName="educational_program"/>
+            </not>
+        </preConditions>
+        <createTable tableName="educational_program">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="elective" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="university_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="educational_program"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153455-2" author="amiroxumbayev">
+        <addForeignKeyConstraint baseTableName="educational_program" baseColumnNames="university_id"
+                                 referencedTableName="university" referencedColumnNames="id"
+                                 constraintName="educational_program_university_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>

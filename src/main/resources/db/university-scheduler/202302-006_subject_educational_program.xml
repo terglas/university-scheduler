@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20230219153456-1" author="amiroxumbayev">
+        <preConditions>
+            <not>
+                <tableExists tableName="subject_educational_program"/>
+            </not>
+        </preConditions>
+        <createTable tableName="subject_educational_program">
+            <column name="educational_program_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subject_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="subject_educational_program"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153456-2" author="amiroxumbayev">
+        <addForeignKeyConstraint baseTableName="subject_educational_program" baseColumnNames="educational_program_id"
+                                 referencedTableName="educational_program" referencedColumnNames="id"
+                                 constraintName="sep_educational_program_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+    <changeSet id="20230219153456-3" author="amiroxumbayev">
+        <addForeignKeyConstraint baseTableName="subject_educational_program" baseColumnNames="subject_id"
+                                 referencedTableName="subject" referencedColumnNames="id"
+                                 constraintName="sep_subject_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+    </changeSet>
+
+</databaseChangeLog>
