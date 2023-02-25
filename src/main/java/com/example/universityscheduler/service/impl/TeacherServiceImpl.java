@@ -1,9 +1,9 @@
 package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.Teacher;
-import com.example.universityscheduler.domain.dto.TeacherDTO;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.TeacherMapper;
+import com.example.universityscheduler.model.TeacherInfo;
 import com.example.universityscheduler.repository.TeacherRepository;
 import com.example.universityscheduler.service.TeacherService;
 import org.springframework.data.domain.Page;
@@ -26,14 +26,14 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public TeacherDTO save(TeacherDTO teacherDTO) {
+    public TeacherInfo save(TeacherInfo teacherDTO) {
         Teacher teacher = TeacherMapper.INSTANCE.toEntity(teacherDTO);
         Teacher createdTeacher = teacherRepository.save(teacher);
         return TeacherMapper.INSTANCE.toDto(createdTeacher);
     }
 
     @Override
-    public TeacherDTO update(TeacherDTO teacherDTO) {
+    public TeacherInfo update(TeacherInfo teacherDTO) {
         Teacher teacher = teacherRepository.findById(teacherDTO.getId()).orElseThrow(() -> {
             throw new NotFoundException(String.format("Teacher not found: %S", teacherDTO.getId()));
         });
@@ -52,7 +52,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    public TeacherDTO findById(UUID id) {
+    public TeacherInfo findById(UUID id) {
         Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
         if(optionalTeacher.isEmpty()) {
             throw new NotFoundException(String.format("teacher not found: %S", id));
@@ -61,7 +61,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Page<TeacherDTO> findAll(Pageable pageable) {
+    public Page<TeacherInfo> findAll(Pageable pageable) {
         return teacherRepository.findAll(pageable)
                 .map(TeacherMapper.INSTANCE::toDto);
     }

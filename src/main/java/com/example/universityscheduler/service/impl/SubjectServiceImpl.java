@@ -1,7 +1,7 @@
 package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.Subject;
-import com.example.universityscheduler.domain.dto.SubjectDTO;
+import com.example.universityscheduler.model.SubjectInfo;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.SubjectMapper;
 import com.example.universityscheduler.repository.SubjectRepository;
@@ -25,14 +25,14 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectDTO save(SubjectDTO subjectDTO) {
+    public SubjectInfo save(SubjectInfo subjectDTO) {
         Subject subject = SubjectMapper.INSTANCE.toEntity(subjectDTO);
         Subject createdSubject = subjectRepository.save(subject);
         return SubjectMapper.INSTANCE.toDto(createdSubject);
     }
 
     @Override
-    public SubjectDTO update(SubjectDTO subjectDTO) {
+    public SubjectInfo update(SubjectInfo subjectDTO) {
         Subject subject = subjectRepository.findById(subjectDTO.getId()).orElseThrow(() -> {
             throw new NotFoundException(String.format("Subject not found: %S", subjectDTO.getId()));
         });
@@ -50,7 +50,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectDTO findById(UUID id) {
+    public SubjectInfo findById(UUID id) {
         Optional<Subject> optionalSubject = subjectRepository.findById(id);
         if(optionalSubject.isEmpty()) {
             throw new NotFoundException(String.format("subject not found: %S", id));
@@ -59,7 +59,7 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Page<SubjectDTO> findAll(Pageable pageable) {
+    public Page<SubjectInfo> findAll(Pageable pageable) {
         return subjectRepository.findAll(pageable)
                 .map(SubjectMapper.INSTANCE::toDto);
     }

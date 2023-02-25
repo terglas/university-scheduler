@@ -1,26 +1,21 @@
 package com.example.universityscheduler.controller;
 
-import com.example.universityscheduler.domain.dto.TeacherDTO;
+import com.example.universityscheduler.api.TeacherzApi;
+import com.example.universityscheduler.model.TeacherInfo;
 import com.example.universityscheduler.service.TeacherService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/teachers")
-public class TeacherController {
+public class TeacherController implements TeacherzApi {
 
     private final TeacherService teacherService;
 
@@ -28,34 +23,43 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
-    @PostMapping
-    public ResponseEntity<TeacherDTO> save(@RequestBody TeacherDTO teacherDTO) {
-        TeacherDTO savedTeacherDto = teacherService.save(teacherDTO);
+    @Override
+    public ResponseEntity<TeacherInfo> create(TeacherInfo teacherDTO) {
+        TeacherInfo savedTeacherDto = teacherService.save(teacherDTO);
         URI location = UriComponentsBuilder.fromPath("/teachers/id").buildAndExpand(savedTeacherDto.getId()).toUri();
         return ResponseEntity.created(location).body(savedTeacherDto);
     }
-
-    @PutMapping
-    public ResponseEntity<TeacherDTO> update(@RequestBody TeacherDTO teacherDTO) {
-        TeacherDTO savedTeacherDto = teacherService.update(teacherDTO);
+    @Override
+    public ResponseEntity<TeacherInfo> update(UUID id, TeacherInfo teacherDTO) {
+        TeacherInfo savedTeacherDto = teacherService.update(teacherDTO);
         return ResponseEntity.ok(savedTeacherDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<TeacherDTO> deleteById(@PathVariable UUID id) {
+    @Override
+    public ResponseEntity<Void> deleteById(UUID id) {
         teacherService.delete(id);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<TeacherDTO> findById(@PathVariable UUID id) {
-        TeacherDTO teacherDto = teacherService.findById(id);
+    @Override
+    public ResponseEntity<TeacherInfo> findById(UUID id) {
+        TeacherInfo teacherDto = teacherService.findById(id);
         return ResponseEntity.ok(teacherDto);
     }
 
-    @GetMapping
-    public ResponseEntity<Page<TeacherDTO>> findAll(Pageable pageable) {
-        Page<TeacherDTO> teachers = teacherService.findAll(pageable);
+    /*FIXME create logic finding by page
+    @Override
+    public ResponseEntity<Page<TeacherInfo>> findAll(Pageable pageable) {
+        Page<TeacherInfo> teachers = teacherService.findAll(pageable);
         return ResponseEntity.ok(teachers);
+    }*/
+
+    @Override
+    public ResponseEntity<List<TeacherInfo>> findAll() {
+        Page<TeacherInfo> teachers = teacherService.findAll(Pageable.unpaged());
+        return ResponseEntity.ok(
+                teachers.stream().map(e -> new TeacherInfo()
+                        .name(e.getName())
+                        .id(e.getId())).collect(Collectors.toList()));
     }
 }

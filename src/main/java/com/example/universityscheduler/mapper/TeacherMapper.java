@@ -1,7 +1,7 @@
 package com.example.universityscheduler.mapper;
 
 import com.example.universityscheduler.domain.Teacher;
-import com.example.universityscheduler.domain.dto.TeacherDTO;
+import com.example.universityscheduler.model.TeacherInfo;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -13,11 +13,11 @@ public interface TeacherMapper {
 
     TeacherMapper INSTANCE = Mappers.getMapper(TeacherMapper.class);
 
-    Teacher toEntity(TeacherDTO teacherDTO);
-    TeacherDTO toDto(Teacher teacher);
+    Teacher toEntity(TeacherInfo teacherDTO);
+    TeacherInfo toDto(Teacher teacher);
 
     @BeanMapping(nullValuePropertyMappingStrategy =
             NullValuePropertyMappingStrategy.IGNORE)
-    void updateTeacherFromDto(TeacherDTO teacherDTO, @MappingTarget Teacher teacher);
+    void updateTeacherFromDto(TeacherInfo teacherDTO, @MappingTarget Teacher teacher);
 
 }
