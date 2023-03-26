@@ -18,10 +18,20 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="user_account_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <rollback>
             <dropTable tableName="university"/>
         </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153453-2" author="amiroxumbayev">
+        <addForeignKeyConstraint baseTableName="university" baseColumnNames="user_account_id"
+                                 referencedTableName="user_account" referencedColumnNames="id"
+                                 constraintName="user_account_university_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
     </changeSet>
 
 </databaseChangeLog>
