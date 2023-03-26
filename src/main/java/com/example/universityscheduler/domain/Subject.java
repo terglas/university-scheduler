@@ -41,7 +41,6 @@ public class Subject {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, title);
     }
-
 }

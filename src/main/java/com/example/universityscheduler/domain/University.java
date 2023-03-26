@@ -10,7 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -29,6 +31,10 @@ public class University {
     @OneToMany(mappedBy = "university")
     @ToString.Exclude
     private List<EducationalProgram> educationalPrograms;
+    @OneToOne
+    @JoinColumn(name = "user_account_id")
+    @ToString.Exclude
+    private UserAccount userAccount;
 
     @Override
     public boolean equals(Object o) {
@@ -40,6 +46,6 @@ public class University {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, name);
     }
 }

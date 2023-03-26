@@ -39,7 +39,7 @@ public class Schedule {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, room, week, startTime, endTime);
     }
 
     public enum Week {
