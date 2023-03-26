@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,10 +20,10 @@ public class Group {
     private UUID id;
     private String title;
     private Integer course;
+
+    @ManyToMany(mappedBy = "groups")
     @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
-    private EducationalProgram educationalProgram;
+    private List<Schedule> schedules;
 
     @Override
     public boolean equals(Object o) {

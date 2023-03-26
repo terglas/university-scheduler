@@ -5,6 +5,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,6 +25,14 @@ public class Schedule {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private Teacher teacher;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "group_schedule",
+            inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
+    private List<Group> groups;
     private String room;
     private Week week;
     private LocalTime startTime;

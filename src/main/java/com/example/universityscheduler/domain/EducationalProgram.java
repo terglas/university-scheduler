@@ -23,9 +23,6 @@ public class EducationalProgram {
     @ManyToMany(mappedBy = "educationalPrograms")
     @ToString.Exclude
     private List<Subject> subjects;
-    @OneToMany(mappedBy = "educationalProgram")
-    @ToString.Exclude
-    private List<Group> groups;
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private University university;
