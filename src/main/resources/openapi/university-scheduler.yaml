@@ -312,7 +312,210 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
+  /universities:
+    get:
+      summary: Get all universities
+      operationId: findAll
+      tags:
+        - Universitiez
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UniversityInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create university
+      operationId: create
+      tags:
+        - Universitiez
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UniversityInfo'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniversityInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+#  /educational-programs:
+#    get:
+#      summary: Get all educational programs
+#      operationId: findAll
+#      tags:
+#        - EducationalProgramz
+#      responses:
+#        '200':
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/SubjectInfo'
+#        '500':
+#          description: Internal Server Error
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#    post:
+#      summary: Create subject
+#      operationId: create
+#      tags:
+#        - Subjectz
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/SubjectInfo'
+#        required: true
+#      responses:
+#        '201':
+#          description: Created
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/SubjectInfo'
+#        '400':
+#          description: Bad Request
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#        '500':
+#          description: Internal Server Error
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#  /educational-programs/{id}:
+#    get:
+#      summary: Get subject by id
+#      operationId: findById
+#      tags:
+#        - Subjectz
+#      parameters:
+#        - name: id
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+#      responses:
+#        '200':
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/SubjectInfo'
+#        '404':
+#          description: Not Found
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#        '500':
+#          description: Internal Server Error
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#    put:
+#      summary: Update subject
+#      operationId: update
+#      tags:
+#        - Subjectz
+#      parameters:
+#        - name: id
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/SubjectInfo'
+#        required: true
+#      responses:
+#        '200':
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/SubjectInfo'
+#        '400':
+#          description: Bad Request
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#        '404':
+#          description: Not Found
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#        '500':
+#          description: Internal Server Error
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#    delete:
+#      summary: Delete subject by id
+#      operationId: deleteById
+#      tags:
+#        - Subjectz
+#      parameters:
+#        - name: id
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+#      responses:
+#        '204':
+#          description: No Content
+#        '404':
+#          description: Not Found
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
+#        '500':
+#          description: Internal Server Error
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/Error'
 components:
     schemas:
         TeacherInfo:
@@ -331,6 +534,14 @@ components:
                     format: uuid
                 title:
                     type: string
+        UniversityInfo:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
         Error:
             type: object
             properties:
