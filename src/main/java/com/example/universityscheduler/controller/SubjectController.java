@@ -1,6 +1,8 @@
 package com.example.universityscheduler.controller;
 
 import com.example.universityscheduler.api.SubjectzApi;
+import com.example.universityscheduler.domain.Subject;
+import com.example.universityscheduler.mapper.rest.SubjectRestMapper;
 import com.example.universityscheduler.model.SubjectInfo;
 import com.example.universityscheduler.service.SubjectService;
 import org.springframework.http.ResponseEntity;
@@ -21,15 +23,17 @@ public class SubjectController implements SubjectzApi {
 
     @Override
     public ResponseEntity<SubjectInfo> create(SubjectInfo subjectDTO) {
-        SubjectInfo savedSubjectDto = subjectService.save(subjectDTO);
+        Subject subject = SubjectRestMapper.INSTANCE.toEntity(subjectDTO);
+        SubjectInfo savedSubjectDto = SubjectRestMapper.INSTANCE.toDto(subjectService.save(subject));
         URI location = UriComponentsBuilder.fromPath("/subjects/id").buildAndExpand(savedSubjectDto.getId()).toUri();
         return ResponseEntity.created(location).body(savedSubjectDto);
     }
 
     @Override
     public ResponseEntity<SubjectInfo> update(UUID id, SubjectInfo subjectDTO) {
-        SubjectInfo savedSubjectDto = subjectService.update(subjectDTO);
-        return ResponseEntity.ok(savedSubjectDto);
+        Subject subject = subjectService.update(SubjectRestMapper.INSTANCE.toEntity(subjectDTO));
+        SubjectInfo subjectInfo = SubjectRestMapper.INSTANCE.toDto(subjectService.update(subject));
+        return ResponseEntity.ok(subjectInfo);
     }
 
     @Override
@@ -39,14 +43,16 @@ public class SubjectController implements SubjectzApi {
     }
     @Override
     public ResponseEntity<SubjectInfo> findById(UUID id) {
-        SubjectInfo subjectDto = subjectService.findById(id);
+        Subject subject = subjectService.findById(id);
+        SubjectInfo subjectDto = SubjectRestMapper.INSTANCE.toDto(subject);
         return ResponseEntity.ok(subjectDto);
     }
 
     /*FIXME
     @Override
     public ResponseEntity<Page<SubjectInfo>> findAll(Pageable pageable) {
-        Page<SubjectInfo> subjects = subjectService.findAll(pageable);
+        Page<SubjectInfo> subjects = subjectService.findAll(pageable)
+                .map(SubjectMapper.INSTANCE::toDto);
         return ResponseEntity.ok(subjects);
     }*/
 }

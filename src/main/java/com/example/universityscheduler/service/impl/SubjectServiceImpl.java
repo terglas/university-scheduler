@@ -1,7 +1,6 @@
 package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.Subject;
-import com.example.universityscheduler.model.SubjectInfo;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.SubjectMapper;
 import com.example.universityscheduler.repository.SubjectRepository;
@@ -25,20 +24,17 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectInfo save(SubjectInfo subjectDTO) {
-        Subject subject = SubjectMapper.INSTANCE.toEntity(subjectDTO);
-        Subject createdSubject = subjectRepository.save(subject);
-        return SubjectMapper.INSTANCE.toDto(createdSubject);
+    public Subject save(Subject subject) {
+        return subjectRepository.save(subject);
     }
 
     @Override
-    public SubjectInfo update(SubjectInfo subjectDTO) {
-        Subject subject = subjectRepository.findById(subjectDTO.getId()).orElseThrow(() -> {
-            throw new NotFoundException(String.format("Subject not found: %S", subjectDTO.getId()));
+    public Subject update(Subject subject) {
+        Subject foundSubject = subjectRepository.findById(subject.getId()).orElseThrow(() -> {
+            throw new NotFoundException(String.format("Subject not found: %S", subject.getId()));
         });
-        SubjectMapper.INSTANCE.updateSubjectFromDto(subjectDTO, subject);
-        Subject createdSubject = subjectRepository.save(subject);
-        return SubjectMapper.INSTANCE.toDto(createdSubject);
+        SubjectMapper.INSTANCE.updateSubject(subject, foundSubject);
+        return subjectRepository.save(foundSubject);
     }
 
     @Override
@@ -50,17 +46,15 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectInfo findById(UUID id) {
+    public Subject findById(UUID id) {
         Optional<Subject> optionalSubject = subjectRepository.findById(id);
-        if(optionalSubject.isEmpty()) {
-            throw new NotFoundException(String.format("subject not found: %S", id));
-        }
-        return SubjectMapper.INSTANCE.toDto(optionalSubject.get());
+        return optionalSubject.orElseThrow(
+                () -> new NotFoundException(String.format("Subject not found: %S", id))
+        );
     }
 
     @Override
-    public Page<SubjectInfo> findAll(Pageable pageable) {
-        return subjectRepository.findAll(pageable)
-                .map(SubjectMapper.INSTANCE::toDto);
+    public Page<Subject> findAll(Pageable pageable) {
+        return subjectRepository.findAll(pageable);
     }
 }
