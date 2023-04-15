@@ -1,8 +1,11 @@
 package com.example.universityscheduler.controller;
 
 import com.example.universityscheduler.api.TeacherzApi;
+import com.example.universityscheduler.domain.Teacher;
+import com.example.universityscheduler.mapper.rest.TeacherRestMapper;
 import com.example.universityscheduler.model.TeacherInfo;
 import com.example.universityscheduler.service.TeacherService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,23 +18,23 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 public class TeacherController implements TeacherzApi {
 
     private final TeacherService teacherService;
-
-    public TeacherController(TeacherService teacherService) {
-        this.teacherService = teacherService;
-    }
+    private final TeacherRestMapper teacherRestMapper;
 
     @Override
     public ResponseEntity<TeacherInfo> create(TeacherInfo teacherDTO) {
-        TeacherInfo savedTeacherDto = teacherService.save(teacherDTO);
+        Teacher teacher = teacherRestMapper.toEntity(teacherDTO);
+        TeacherInfo savedTeacherDto = teacherRestMapper.toDto(teacherService.save(teacher));
         URI location = UriComponentsBuilder.fromPath("/teachers/id").buildAndExpand(savedTeacherDto.getId()).toUri();
         return ResponseEntity.created(location).body(savedTeacherDto);
     }
     @Override
     public ResponseEntity<TeacherInfo> update(UUID id, TeacherInfo teacherDTO) {
-        TeacherInfo savedTeacherDto = teacherService.update(teacherDTO);
+        Teacher teacher = teacherRestMapper.toEntity(teacherDTO);
+        TeacherInfo savedTeacherDto = teacherRestMapper.toDto(teacherService.update(teacher));
         return ResponseEntity.ok(savedTeacherDto);
     }
 
@@ -43,7 +46,7 @@ public class TeacherController implements TeacherzApi {
 
     @Override
     public ResponseEntity<TeacherInfo> findById(UUID id) {
-        TeacherInfo teacherDto = teacherService.findById(id);
+        TeacherInfo teacherDto = teacherRestMapper.toDto(teacherService.findById(id));
         return ResponseEntity.ok(teacherDto);
     }
 
@@ -56,7 +59,8 @@ public class TeacherController implements TeacherzApi {
 
     @Override
     public ResponseEntity<List<TeacherInfo>> findAll() {
-        Page<TeacherInfo> teachers = teacherService.findAll(Pageable.unpaged());
+        Page<TeacherInfo> teachers = teacherService.findAll(Pageable.unpaged())
+                .map(teacherRestMapper::toDto);
         return ResponseEntity.ok(
                 teachers.stream().map(e -> new TeacherInfo()
                         .name(e.getName())
