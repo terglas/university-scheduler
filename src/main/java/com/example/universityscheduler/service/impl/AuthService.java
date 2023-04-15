@@ -2,7 +2,7 @@ package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.UserAccount;
 import com.example.universityscheduler.exception.BadAuthorizeException;
-import com.example.universityscheduler.exception.ConfilctException;
+import com.example.universityscheduler.exception.ConflictException;
 import com.example.universityscheduler.exception.ForbiddenException;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.AuthMapper;
@@ -82,7 +82,7 @@ public class AuthService {
                 break;
             case 409:
                 log.error("conflict with users' params: [{}]", response);
-                throw new ConfilctException();
+                throw new ConflictException();
             default:
                 log.error("Some error occurred during client registration: {} - {}",
                         response.getStatus(), response.getStatusInfo());
@@ -98,16 +98,13 @@ public class AuthService {
     public AuthResponse login(AuthRequest login) {
         log.info("START login for user {}", login.getEmail());
 
-        UserAccount user = userRepo.findByEmail(login.getEmail());
-        try{
-            checkUser(user);
-        } catch(NotFoundException e){
-            userRepo.save(AuthMapper.INSTANCE.map(login));
-        }
-
         try {
             val response = authzClient.authorization(login.getEmail(), login.getPassword())
                     .authorize();
+
+            UserAccount user = userRepo.findByEmail(login.getEmail());
+            checkUser(user);
+
             val result = new AuthResponse()
                     .tokenType(response.getTokenType())
                     .token(response.getToken())
@@ -115,6 +112,9 @@ public class AuthService {
  
             log.info("FINISH login for user {} successfully", login.getEmail());
             return result;
+        } catch (NotFoundException ex) {
+            userRepo.save(AuthMapper.INSTANCE.map(login));
+            return login(login);
         } catch (AuthorizationDeniedException | HttpResponseException ex) {
             log.debug("Exception when login {}", login.getEmail(), ex);
             log.error("FINISH login for user {} is bad", login.getEmail());
@@ -234,12 +234,12 @@ public class AuthService {
  
         if (foundUsers.size() > 1) {
             log.error("Found more than one keycloak user while the only was expected");
-            throw new ConfilctException();
+            throw new ConflictException();
         }
  
         val found = foundUsers.iterator().next();
         return Optional.of(userResource.get(found.getId()))
-                .orElseThrow(ConfilctException::new);
+                .orElseThrow(ConflictException::new);
     }
 
     public Authentication authenticateByToken(String bearerToken) {
