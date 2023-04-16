@@ -70,4 +70,16 @@ public class EducationalProgramServiceImpl implements EducationalProgramService 
         educationalProgram.getSubjects().add(subject);
         educationalProgramRepository.save(educationalProgram);
     }
+
+    @Override
+    public void removeSubject(UUID educationalProgramId, UUID subjectId) {
+        val educationalProgram = educationalProgramRepository.findById(educationalProgramId)
+                .orElseThrow(() -> new NotFoundException(String.format("Educational program not found: %S", educationalProgramId)));
+        val subject = educationalProgram.getSubjects().stream()
+                .filter(s -> s.getId().equals(subjectId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException(String.format("Subject not found: %S", subjectId)));
+        educationalProgram.getSubjects().remove(subject);
+        educationalProgramRepository.save(educationalProgram);
+    }
 }

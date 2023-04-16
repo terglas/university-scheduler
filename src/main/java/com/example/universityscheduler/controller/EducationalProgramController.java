@@ -72,6 +72,12 @@ public class EducationalProgramController implements EducationalProgramzApi {
     }
 
     @Override
+    public ResponseEntity<Void> deleteSubject(UUID id, UUID subjectId) {
+        educationalProgramService.removeSubject(id, subjectId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
     public ResponseEntity<EducationalProgramExtendedInfo> findAllSubjects(UUID id) {
         val educationalProgram = educationalProgramRestMapper.toExtendedDto(educationalProgramService.findById(id));
         return ResponseEntity.ok(educationalProgram);

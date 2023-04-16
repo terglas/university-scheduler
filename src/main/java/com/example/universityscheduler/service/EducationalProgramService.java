@@ -17,6 +17,7 @@ public interface EducationalProgramService {
     // add subject to educational program
     void addSubject(UUID educationalProgramId, UUID subjectId);
     // remove subject from educational program
+    void removeSubject(UUID educationalProgramId, UUID subjectId);
     // get all subjects from educational program
     // get all educational programs by subject
 }
