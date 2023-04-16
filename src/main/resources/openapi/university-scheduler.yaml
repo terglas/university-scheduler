@@ -754,14 +754,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  pageParams:
-                    $ref: '#/components/schemas/PageParams'
-                  groups:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/GroupInfo'
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupInfo'
         '500':
           description: Internal Server Error
           content:
