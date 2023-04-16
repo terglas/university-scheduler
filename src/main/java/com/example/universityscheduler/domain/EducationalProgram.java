@@ -20,8 +20,13 @@ public class EducationalProgram {
     private UUID id;
     private String title;
     private boolean elective;
-    @ManyToMany(mappedBy = "educationalPrograms")
+
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "subject_educational_program",
+            inverseJoinColumns = @JoinColumn(name = "subject_id"),
+            joinColumns = @JoinColumn(name = "educational_program_id"))
     private List<Subject> subjects;
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude

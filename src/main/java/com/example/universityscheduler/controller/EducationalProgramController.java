@@ -3,8 +3,10 @@ package com.example.universityscheduler.controller;
 import com.example.universityscheduler.api.EducationalProgramzApi;
 import com.example.universityscheduler.mapper.PageMapper;
 import com.example.universityscheduler.mapper.rest.EducationalProgramRestMapper;
+import com.example.universityscheduler.model.EducationalProgramExtendedInfo;
 import com.example.universityscheduler.model.EducationalProgramInfo;
 import com.example.universityscheduler.model.PageParams;
+import com.example.universityscheduler.model.SubjectInfo;
 import com.example.universityscheduler.service.EducationalProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -63,4 +65,15 @@ public class EducationalProgramController implements EducationalProgramzApi {
         return ResponseEntity.ok(educationalPrograms);
     }
 
+    @Override
+    public ResponseEntity<SubjectInfo> addSubject(UUID id, UUID subjectId) {
+        educationalProgramService.addSubject(id, subjectId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<EducationalProgramExtendedInfo> findAllSubjects(UUID id) {
+        val educationalProgram = educationalProgramRestMapper.toExtendedDto(educationalProgramService.findById(id));
+        return ResponseEntity.ok(educationalProgram);
+    }
 }

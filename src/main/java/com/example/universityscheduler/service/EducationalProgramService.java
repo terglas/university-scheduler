@@ -13,4 +13,10 @@ public interface EducationalProgramService {
     EducationalProgram findById(UUID id);
     EducationalProgram update(EducationalProgram educationalProgram);
     void delete(UUID id);
+
+    // add subject to educational program
+    void addSubject(UUID educationalProgramId, UUID subjectId);
+    // remove subject from educational program
+    // get all subjects from educational program
+    // get all educational programs by subject
 }

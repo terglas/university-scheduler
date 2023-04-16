@@ -19,13 +19,7 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String title;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "subject_educational_program",
-            inverseJoinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id"),
-            joinColumns = @JoinColumn(name = "educational_program_id", referencedColumnName = "id"))
-    private List<EducationalProgram> educationalPrograms;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "subject")
