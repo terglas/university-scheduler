@@ -3,15 +3,16 @@ package com.example.universityscheduler.service.impl;
 import com.example.universityscheduler.domain.Teacher;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.TeacherMapper;
+import com.example.universityscheduler.model.PageParams;
 import com.example.universityscheduler.repository.TeacherRepository;
 import com.example.universityscheduler.service.TeacherService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.val;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -30,7 +31,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher update(Teacher teacher) {
-        Teacher foundTeacher = teacherRepository.findById(teacher.getId()).orElseThrow(() -> {
+        val foundTeacher = teacherRepository.findById(teacher.getId()).orElseThrow(() -> {
             throw new NotFoundException(String.format("Teacher not found: %S", teacher.getId()));
         });
         teacherMapper.updateTeacher(teacher, foundTeacher);
@@ -39,7 +40,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public void delete(UUID id) {
-        Teacher teacher = teacherRepository.findById(id).orElseThrow(() -> {
+        val teacher = teacherRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException(String.format("Teacher not found: %S", id));
         });
         teacherRepository.delete(teacher);
@@ -48,13 +49,14 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher findById(UUID id) {
-        Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
+        val optionalTeacher = teacherRepository.findById(id);
         return optionalTeacher.orElseThrow(
                 () -> new NotFoundException(String.format("Teacher not found: %S", id)));
     }
 
     @Override
-    public Page<Teacher> findAll(Pageable pageable) {
-        return teacherRepository.findAll(pageable);
+    public List<Teacher> findAll(PageParams page) {
+        val pageable = PageRequest.of(page.getPageCurrent() - 1, page.getPageSize());
+        return teacherRepository.findAll(pageable).getContent();
     }
 }
