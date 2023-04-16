@@ -206,11 +206,21 @@
                                 <generateBuilders>true</generateBuilders>
                             </configOptions>
                             <typeMappings>
-                                <offsetDateTime>Instant</offsetDateTime>
+                                <typeMapping>
+                                    OffsetDateTime=LocalDateTime
+                                </typeMapping>
+                                <typeMapping>
+                                    Date=LocalDate
+                                </typeMapping>
+                                <typeMapping>
+                                    time=LocalTime
+                                </typeMapping>
                             </typeMappings>
                             <importMappings>
-                                <offsetDateTime>java.time.Instant</offsetDateTime>
-                                <pageable>org.springframework.data.domain.Pageable</pageable>
+                                <importMapping>java.time.OffsetDateTime=java.time.LocalDateTime</importMapping>
+                                <importMapping>org.springframework.data.domain.Sort=org.springframework.data.domain.Sort</importMapping>
+                                <importMapping>LocalDate=java.time.LocalDate</importMapping>
+                                <importMapping>LocalTime=java.time.LocalTime</importMapping>
                             </importMappings>
                         </configuration>
                     </execution>
