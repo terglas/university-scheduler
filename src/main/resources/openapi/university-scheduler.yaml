@@ -897,6 +897,60 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /schedules:
+    get:
+      summary: Get all schedules
+      operationId: findAll
+      tags:
+        - Schedulez
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create schedule
+      operationId: create
+      tags:
+        - Schedulez
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleInfo'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   parameters:
     pageParams:
@@ -1010,6 +1064,46 @@ components:
         course:
           type: integer
           format: int32
+
+    ScheduleInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        subjectId:
+          type: string
+          format: uuid
+        teacherId:
+          type: string
+          format: uuid
+        groups:
+          type: array
+          items:
+            type: string
+            format: uuid
+        room:
+          type: string
+        week:
+          $ref: '#/components/schemas/Week'
+        startTime:
+          type: string
+          format: time
+        endTime:
+          type: string
+          format: time
+
+    Week:
+      type: string
+      description: Week day
+      enum:
+          - MONDAY
+          - TUESDAY
+          - WEDNESDAY
+          - THURSDAY
+          - FRIDAY
+          - SATURDAY
+          - SUNDAY
 
     AuthRequest:
       type: object
