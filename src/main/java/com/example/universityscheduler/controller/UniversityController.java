@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,8 +29,8 @@ public class UniversityController implements UniversitiezApi {
 
     @Override
     public ResponseEntity<UniversityInfo> create(UniversityInfo universityInfo) {
-        University university = universityRestMapper.toEntity(universityInfo);
-        UniversityInfo savedUniversityInfo = universityRestMapper.toDto(universityService.save(university));
+        val university = universityRestMapper.toEntity(universityInfo);
+        val savedUniversityInfo = universityRestMapper.toDto(universityService.save(university));
         URI location = UriComponentsBuilder.fromPath("/universities/id").buildAndExpand(savedUniversityInfo.getId()).toUri();
         return ResponseEntity.created(location).body(savedUniversityInfo);
     }
@@ -41,5 +42,24 @@ public class UniversityController implements UniversitiezApi {
                 .map(universityRestMapper::toDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(universities);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteById(UUID id) {
+        universityService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<UniversityInfo> findById(UUID id) {
+        val universityInfo = universityRestMapper.toDto(universityService.findById(id));
+        return ResponseEntity.ok(universityInfo);
+    }
+
+    @Override
+    public ResponseEntity<UniversityInfo> update(UUID id, UniversityInfo universityInfo) {
+        val university = universityRestMapper.toEntity(universityInfo);
+        val savedUniversityInfo = universityRestMapper.toDto(universityService.update(university));
+        return ResponseEntity.ok(savedUniversityInfo);
     }
 }
