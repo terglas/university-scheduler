@@ -35,6 +35,7 @@ public class UniversityController implements UniversitiezApi {
         return ResponseEntity.created(location).body(savedUniversityInfo);
     }
 
+    //FIXME findAll for one to one relation?
     @Override
     public ResponseEntity<List<UniversityInfo>> findAll(Optional<PageParams> pageParams) {
         val page = pageMapper.toDto(pageParams);

@@ -678,6 +678,9 @@ components:
               format: uuid
             name:
               type: string
+            userId:
+              type: string
+              format: uuid
 
         Error:
             type: object
