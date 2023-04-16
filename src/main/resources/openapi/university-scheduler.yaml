@@ -628,6 +628,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
   /educational-programs/{id}/subjects:
     get:
       summary: Get all subjects of educational program
@@ -728,6 +729,65 @@ paths:
           description: No Content
         '404':
           description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /groups:
+    get:
+      summary: Get all groups
+      operationId: findAll
+      tags:
+        - Groupz
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pageParams:
+                    $ref: '#/components/schemas/PageParams'
+                  groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/GroupInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create group
+      operationId: create
+      tags:
+        - Groupz
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupInfo'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupInfo'
+        '400':
+          description: Bad Request
           content:
             application/json:
               schema:
@@ -839,6 +899,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SubjectInfo'
+
+    GroupInfo:
+        type: object
+        properties:
+            id:
+              type: string
+              format: uuid
+            title:
+              type: string
+            course:
+              type: integer
+              format: int32
 
     AuthRequest:
       type: object
