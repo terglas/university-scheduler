@@ -31,26 +31,23 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher update(Teacher teacher) {
-        val foundTeacher = teacherRepository.findById(teacher.getId()).orElseThrow(() -> {
-            throw new NotFoundException(String.format("Teacher not found: %S", teacher.getId()));
-        });
+        val foundTeacher = teacherRepository.findById(teacher.getId())
+                .orElseThrow(() -> new NotFoundException(String.format("Teacher not found: %S", teacher.getId())));
         teacherMapper.updateTeacher(teacher, foundTeacher);
         return teacherRepository.save(teacher);
     }
 
     @Override
     public void delete(UUID id) {
-        val teacher = teacherRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException(String.format("Teacher not found: %S", id));
-        });
+        val teacher = teacherRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Teacher not found: %S", id)));
         teacherRepository.delete(teacher);
     }
 
 
     @Override
     public Teacher findById(UUID id) {
-        val optionalTeacher = teacherRepository.findById(id);
-        return optionalTeacher.orElseThrow(
+        return teacherRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format("Teacher not found: %S", id)));
     }
 

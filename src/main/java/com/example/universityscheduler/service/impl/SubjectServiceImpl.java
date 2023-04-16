@@ -30,18 +30,16 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Subject update(Subject subject) {
-        val foundSubject = subjectRepository.findById(subject.getId()).orElseThrow(() -> {
-            throw new NotFoundException(String.format("Subject not found: %S", subject.getId()));
-        });
+        val foundSubject = subjectRepository.findById(subject.getId())
+                .orElseThrow(() -> new NotFoundException(String.format("Subject not found: %S", subject.getId())));
         subjectMapper.updateSubject(subject, foundSubject);
         return subjectRepository.save(foundSubject);
     }
 
     @Override
     public void delete(UUID id) {
-        val subject = subjectRepository.findById(id).orElseThrow(() -> {
-            throw new NotFoundException(String.format("Subject not found: %S", id));
-        });
+        val subject = subjectRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Subject not found: %S", id)));
         subjectRepository.delete(subject);
     }
 
