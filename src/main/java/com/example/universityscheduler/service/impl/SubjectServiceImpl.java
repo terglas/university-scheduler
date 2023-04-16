@@ -45,8 +45,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Subject findById(UUID id) {
-        val optionalSubject = subjectRepository.findById(id);
-        return optionalSubject.orElseThrow(
+       return subjectRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format("Subject not found: %S", id))
         );
     }
