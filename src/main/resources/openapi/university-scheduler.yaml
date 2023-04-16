@@ -4,7 +4,7 @@ info:
   description: University Scheduler API
   version: 1.0.0
 servers:
-    - url: http://localhost:8080
+  - url: http://localhost:8080
 paths:
   /teachers:
     get:
@@ -30,35 +30,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
-        summary: Create teacher
-        operationId: create
-        tags:
-            - Teacherz
-        requestBody:
-            content:
-              application/json:
-                  schema:
-                    $ref: '#/components/schemas/TeacherInfo'
-            required: true
-        responses:
-            '201':
-              description: Created
-              content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/TeacherInfo'
-            '400':
-              description: Bad Request
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/Error'
-            '500':
-              description: Internal Server Error
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/Error'
+      summary: Create teacher
+      operationId: create
+      tags:
+        - Teacherz
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeacherInfo'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeacherInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /teachers/{id}:
     get:
       summary: Get teacher by id
@@ -185,35 +185,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     post:
-        summary: Create subject
-        operationId: create
-        tags:
-            - Subjectz
-        requestBody:
-            content:
-              application/json:
-                  schema:
-                    $ref: '#/components/schemas/SubjectInfo'
-            required: true
-        responses:
-            '201':
-              description: Created
-              content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/SubjectInfo'
-            '400':
-              description: Bad Request
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/Error'
-            '500':
-              description: Internal Server Error
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/Error'
+      summary: Create subject
+      operationId: create
+      tags:
+        - Subjectz
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubjectInfo'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubjectInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /subjects/{id}:
     get:
       summary: Get subject by id
@@ -471,250 +471,269 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-#  /educational-programs:
-#    get:
-#      summary: Get all educational programs
-#      operationId: findAll
-#      tags:
-#        - EducationalProgramz
-#      responses:
-#        '200':
-#          description: OK
-#          content:
-#            application/json:
-#              schema:
-#                type: array
-#                items:
-#                  $ref: '#/components/schemas/SubjectInfo'
-#        '500':
-#          description: Internal Server Error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
-#    post:
-#      summary: Create subject
-#      operationId: create
-#      tags:
-#        - Subjectz
-#      requestBody:
-#        content:
-#          application/json:
-#            schema:
-#              $ref: '#/components/schemas/SubjectInfo'
-#        required: true
-#      responses:
-#        '201':
-#          description: Created
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/SubjectInfo'
-#        '400':
-#          description: Bad Request
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
-#        '500':
-#          description: Internal Server Error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
-#  /educational-programs/{id}:
-#    get:
-#      summary: Get subject by id
-#      operationId: findById
-#      tags:
-#        - Subjectz
-#      parameters:
-#        - name: id
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#            format: uuid
-#      responses:
-#        '200':
-#          description: OK
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/SubjectInfo'
-#        '404':
-#          description: Not Found
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
-#        '500':
-#          description: Internal Server Error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
-#    put:
-#      summary: Update subject
-#      operationId: update
-#      tags:
-#        - Subjectz
-#      parameters:
-#        - name: id
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#            format: uuid
-#      requestBody:
-#        content:
-#          application/json:
-#            schema:
-#              $ref: '#/components/schemas/SubjectInfo'
-#        required: true
-#      responses:
-#        '200':
-#          description: OK
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/SubjectInfo'
-#        '400':
-#          description: Bad Request
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
-#        '404':
-#          description: Not Found
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
-#        '500':
-#          description: Internal Server Error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
-#    delete:
-#      summary: Delete subject by id
-#      operationId: deleteById
-#      tags:
-#        - Subjectz
-#      parameters:
-#        - name: id
-#          in: path
-#          required: true
-#          schema:
-#            type: string
-#            format: uuid
-#      responses:
-#        '204':
-#          description: No Content
-#        '404':
-#          description: Not Found
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
-#        '500':
-#          description: Internal Server Error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/Error'
+
+  /educational-programs:
+    get:
+      summary: Get all educational programs
+      operationId: findAll
+      tags:
+        - EducationalProgramz
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EducationalProgramInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create educational program
+      operationId: create
+      tags:
+        - EducationalProgramz
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EducationalProgramInfo'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EducationalProgramInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /educational-programs/{id}:
+    get:
+      summary: Get educational program by id
+      operationId: findById
+      tags:
+        - EducationalProgramz
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EducationalProgramInfo'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update educational program
+      operationId: update
+      tags:
+        - EducationalProgramz
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EducationalProgramInfo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EducationalProgramInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete educational program by id
+      operationId: deleteById
+      tags:
+        - EducationalProgramz
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
-    parameters:
-      pageParams:
-        in: query
-        name: pageParams
-        description: Page parameters
-        required: false
-        schema:
-          $ref: '#/components/schemas/PageParams'
+  parameters:
+    pageParams:
+      in: query
+      name: pageParams
+      description: Page parameters
+      required: false
+      schema:
+        $ref: '#/components/schemas/PageParams'
 
-    schemas:
-        PageParams:
-            description: Page parameters
-            type: object
-            properties:
-                pageSize:
-                  description: Page size
-                  type: integer
-                  minimum: 1
-                  maximum: 50
-                pageCurrent:
-                  description: Current page
-                  type: integer
-                  minimum: 1
-                pageTotal:
-                  description: Total pages
-                  type: integer
+  schemas:
+    PageParams:
+      description: Page parameters
+      type: object
+      properties:
+        pageSize:
+          description: Page size
+          type: integer
+          minimum: 1
+          maximum: 50
+        pageCurrent:
+          description: Current page
+          type: integer
+          minimum: 1
+        pageTotal:
+          description: Total pages
+          type: integer
 
-        TeacherInfo:
-            type: object
-            properties:
-                id:
-                    type: string
-                    format: uuid
-                name:
-                    type: string
+    TeacherInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
 
-        SubjectInfo:
-            type: object
-            properties:
-                id:
-                    type: string
-                    format: uuid
-                title:
-                    type: string
+    SubjectInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
 
-        UniversityInfo:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            userId:
-              type: string
-              format: uuid
+    UniversityInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        userId:
+          type: string
+          format: uuid
 
-        Error:
-            type: object
-            properties:
-                message:
-                    type: string
-                status:
-                    type: integer
-                    format: int32
-                timestamp:
-                    type: string
-                    format: date-time
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: integer
+          format: int32
+        timestamp:
+          type: string
+          format: date-time
 
-        AuthRequest:
-          type: object
-          required:
-            - email
-            - password
-          properties:
-            email:
-              type: string
-              format: email
-              minLength: 3
-              maxLength: 255
-            password:
-              type: string
-              maxLength: 255
+    EducationalProgramInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        elective:
+          type: boolean
+        universityId:
+          type: string
+          format: uuid
 
-        AuthResponse:
-            type: object
-            properties:
-                token:
-                    type: string
-                refreshToken:
-                    type: string
-                tokenType:
-                    type: string
+    AuthRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 3
+          maxLength: 255
+        password:
+          type: string
+          maxLength: 255
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        refreshToken:
+          type: string
+        tokenType:
+          type: string
