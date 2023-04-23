@@ -3,11 +3,20 @@
 <entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" version="2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd">
 
-    <named-native-query name="Schedule.findByGroupId">
+    <named-native-query name="Schedule.findByGroupId" result-class="com.example.universityscheduler.domain.Schedule">
         <query>
             <![CDATA[
                 SELECT * FROM schedule s inner join group_schedule gs on s.id = gs.schedule_id
-                WHERE groupid = :groupId
+                WHERE gs.group_id = :groupId
+            ]]>
+        </query>
+    </named-native-query>
+
+    <named-native-query name="Schedule.countByGroupId">
+        <query>
+            <![CDATA[
+                SELECT COUNT(*) FROM schedule s inner join group_schedule gs on s.id = gs.schedule_id
+                WHERE gs.group_id = :groupId
             ]]>
         </query>
     </named-native-query>
