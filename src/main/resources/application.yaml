@@ -11,7 +11,7 @@ keycloak:
   ssl-required: none
 spring:
   datasource:
-    url: jdbc:${DATABASE_URL:postgresql://localhost:5433/university-scheduler}
+    url: jdbc:${DATABASE_CONNECTION:postgresql://localhost:5433/university-scheduler}
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:postgres}
   mvc:
