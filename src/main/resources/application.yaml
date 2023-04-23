@@ -1,3 +1,5 @@
+server:
+  port: ${PORT:8080}
 keycloak:
   realm: university-scheduler-realm
   auth-server-url: http://localhost:8087/auth
@@ -9,9 +11,9 @@ keycloak:
   ssl-required: none
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/university-scheduler
-    username: postgres
-    password: postgres
+    url: jdbc:${DATABASE_URL:postgresql://localhost:5433/university-scheduler}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
   mvc:
     throw-exception-if-no-handler-found: true
   web:
