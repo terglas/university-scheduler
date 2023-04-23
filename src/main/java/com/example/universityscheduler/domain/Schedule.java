@@ -4,7 +4,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -28,15 +28,16 @@ public class Schedule {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "group_schedule",
-            inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"),
-            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
     private List<Group> groups;
     private String room;
+    @Enumerated(EnumType.STRING)
     private Week week;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     @Override
     public boolean equals(Object o) {

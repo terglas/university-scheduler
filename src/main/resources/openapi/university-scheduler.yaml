@@ -1167,6 +1167,9 @@ components:
         course:
           type: integer
           format: int32
+        educationalProgramId:
+          type: string
+          format: uuid
 
     ScheduleInfo:
       type: object
@@ -1191,10 +1194,10 @@ components:
           $ref: '#/components/schemas/Week'
         startTime:
           type: string
-          format: time
+          format: date-time
         endTime:
           type: string
-          format: time
+          format: date-time
 
     Week:
       type: string
