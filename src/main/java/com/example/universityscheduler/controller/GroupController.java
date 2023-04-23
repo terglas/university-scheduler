@@ -35,7 +35,7 @@ public class GroupController implements GroupzApi {
     }
 
     @Override
-    public ResponseEntity<Void> delete(UUID id) {
+    public ResponseEntity<Void> deleteById(UUID id) {
         groupService.delete(id);
         return ResponseEntity.ok().build();
     }
