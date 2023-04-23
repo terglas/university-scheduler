@@ -748,6 +748,7 @@ paths:
         - Groupz
       parameters:
         - $ref: '#/components/parameters/pageParams'
+        - $ref: '#/components/parameters/search'
       responses:
         '200':
           description: OK
@@ -1063,6 +1064,14 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/PageParams'
+
+    search:
+      in: query
+      name: search
+      description: search query
+      required: false
+      schema:
+        type: string
 
   schemas:
     PageParams:

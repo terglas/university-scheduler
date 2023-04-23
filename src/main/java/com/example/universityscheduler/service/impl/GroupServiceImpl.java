@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,8 +31,12 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<Group> findAll(PageParams pageParams) {
+    public List<Group> findAll(PageParams pageParams, Optional<String> search) {
         val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
+        String searchValue = search.orElse("");
+        if(!searchValue.isBlank()) {
+            return groupRepository.findAllByTitleContains(searchValue, pageable).getContent();
+        }
         return groupRepository.findAll(pageable).getContent();
     }
 
