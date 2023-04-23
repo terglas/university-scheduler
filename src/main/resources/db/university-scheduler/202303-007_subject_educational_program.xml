@@ -12,6 +12,9 @@
             </not>
         </preConditions>
         <createTable tableName="subject_educational_program">
+            <column name="id" type = "uuid" defaultValue="uuid_generate_v4()" valueComputed="UUID()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
             <column name="educational_program_id" type="UUID">
                 <constraints nullable="false"/>
             </column>

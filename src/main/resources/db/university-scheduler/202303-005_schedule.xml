@@ -21,10 +21,10 @@
             <column name="week" type="varchar(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="start_time" type="time">
+            <column name="start_time" type="datetime">
                 <constraints nullable="false"/>
             </column>
-            <column name="end_time" type="time">
+            <column name="end_time" type="datetime">
                 <constraints nullable="false"/>
             </column>
             <column name="subject_id" type="UUID">
