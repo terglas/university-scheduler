@@ -10,6 +10,9 @@ keycloak:
     secret: K38CvXIgBEP3uRnNO42QNWRNhJ2bP4r0
   ssl-required: none
 spring:
+  jpa:
+    mapping-resources:
+      - META-INF/orm.xml
   datasource:
     url: jdbc:${DATABASE_CONNECTION:postgresql://localhost:5433/university-scheduler}
     username: ${DATABASE_USERNAME:postgres}
