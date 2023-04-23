@@ -2,9 +2,11 @@ package com.example.universityscheduler.controller;
 
 import com.example.universityscheduler.api.SchedulezApi;
 import com.example.universityscheduler.mapper.PageMapper;
+import com.example.universityscheduler.mapper.SearchMapper;
 import com.example.universityscheduler.mapper.rest.ScheduleRestMapper;
 import com.example.universityscheduler.model.PageParams;
 import com.example.universityscheduler.model.ScheduleInfo;
+import com.example.universityscheduler.model.SearchType;
 import com.example.universityscheduler.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -25,6 +27,7 @@ public class ScheduleController implements SchedulezApi {
     private final ScheduleService scheduleService;
     private final ScheduleRestMapper scheduleRestMapper;
     private final PageMapper pageMapper;
+    private final SearchMapper searchMapper;
 
     @Override
     public ResponseEntity<ScheduleInfo> create(ScheduleInfo scheduleInfo) {
@@ -41,9 +44,10 @@ public class ScheduleController implements SchedulezApi {
     }
 
     @Override
-    public ResponseEntity<List<ScheduleInfo>> findAll(Optional<PageParams> pageParams) {
+    public ResponseEntity<List<ScheduleInfo>> findAll(Optional<UUID> searchId, Optional<SearchType> type, Optional<PageParams> pageParams) {
         val page = pageMapper.toDto(pageParams);
-        val schedules = scheduleService.findAll(page).stream()
+        val searchQuery  = searchMapper.toSearchQuery(searchId, type);
+        val schedules = scheduleService.findAll(searchQuery, page).stream()
                 .map(scheduleRestMapper::toDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(schedules);
