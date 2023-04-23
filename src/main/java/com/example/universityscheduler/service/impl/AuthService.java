@@ -37,7 +37,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.*;
 
 @Slf4j
-@Service
+//@Service
 @RequiredArgsConstructor
 public class AuthService {
     private final KeycloakSpringBootProperties keycloakConfig;

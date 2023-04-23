@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.session.NullAuthenticated
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-@KeycloakConfiguration
+//@KeycloakConfiguration
 @RequiredArgsConstructor
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
