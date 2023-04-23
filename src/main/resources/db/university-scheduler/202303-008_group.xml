@@ -21,7 +21,16 @@
             <column name="course" type="int">
                 <constraints nullable="false"/>
             </column>
+            <column name="educational_program_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
+
+        <addForeignKeyConstraint baseTableName="group" baseColumnNames="educational_program_id"
+                                 referencedTableName="educational_program" referencedColumnNames="id"
+                                 constraintName="group_ep_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+
         <rollback>
             <dropTable tableName="group"/>
         </rollback>

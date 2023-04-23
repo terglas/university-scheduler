@@ -25,6 +25,11 @@ public class Group {
     @ToString.Exclude
     private List<Schedule> schedules;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    private EducationalProgram educationalProgram;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
