@@ -905,6 +905,8 @@ paths:
       tags:
         - Schedulez
       parameters:
+        - $ref: '#/components/parameters/searchId'
+        - $ref: '#/components/parameters/searchType'
         - $ref: '#/components/parameters/pageParams'
       responses:
         '200':
@@ -1073,6 +1075,22 @@ components:
       schema:
         type: string
 
+    searchId:
+      in: query
+      name: searchId
+      description: Search id
+      required: false
+      schema:
+        $ref: '#/components/schemas/SearchId'
+
+    searchType:
+      in: query
+      name: searchType
+      description: Searchtype
+      required: false
+      schema:
+        $ref: '#/components/schemas/SearchType'
+
   schemas:
     PageParams:
       description: Page parameters
@@ -1212,13 +1230,13 @@ components:
       type: string
       description: Week day
       enum:
-          - MONDAY
-          - TUESDAY
-          - WEDNESDAY
-          - THURSDAY
-          - FRIDAY
-          - SATURDAY
-          - SUNDAY
+        - MONDAY
+        - TUESDAY
+        - WEDNESDAY
+        - THURSDAY
+        - FRIDAY
+        - SATURDAY
+        - SUNDAY
 
     AuthRequest:
       type: object
@@ -1244,3 +1262,26 @@ components:
           type: string
         tokenType:
           type: string
+
+    SearchId:
+      type: string
+      format: uuid
+
+    SearchType:
+      type: string
+      description: Search type
+      enum:
+        - TEACHER
+        - SUBJECT
+        - UNIVERSITY
+        - EDUCATIONAL_PROGRAM
+        - GROUP
+
+    SearchQuery:
+      type: object
+      description: Search query
+      properties:
+        searchId:
+          $ref: '#/components/schemas/SearchId'
+        searchType:
+          $ref: '#/components/schemas/SearchType'
