@@ -34,7 +34,7 @@ public abstract class ScheduleRestMapper {
     @Mapping(target = "teacherId", source = "teacher.id")
     public abstract ScheduleInfo toDto(Schedule schedule);
 
-    @Mapping(target = "groups", source = "groups", qualifiedByName = "toGroupIds")
+    @Mapping(target = "groups", source = "groups", qualifiedByName = "toGroupNames")
     @Mapping(target = "subjectName", source = "subject.title")
     @Mapping(target = "teacherName", source = "teacher.fullName")
     public abstract ScheduleExtendedInfo toExtendedDto(Schedule schedule);
@@ -50,6 +50,13 @@ public abstract class ScheduleRestMapper {
     protected List<UUID> toGroupIds(List<Group> groups) {
         return groups.stream()
                 .map(Group::getId)
+                .collect(Collectors.toList());
+    }
+
+    @Named("toGroupNames")
+    protected List<String> toGroupNames(List<Group> groups) {
+        return groups.stream()
+                .map(Group::getTitle)
                 .collect(Collectors.toList());
     }
 }
