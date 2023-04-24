@@ -1,6 +1,7 @@
 package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.Schedule;
+import com.example.universityscheduler.exception.ConflictException;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.ScheduleMapper;
 import com.example.universityscheduler.model.PageParams;
@@ -54,7 +55,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             return scheduleRepository.save(schedule);
         }
         // TODO custom exception
-        throw new IllegalArgumentException("Schedule does not fit");
+        throw new ConflictException("Schedule does not fit");
     }
 
     @Override
