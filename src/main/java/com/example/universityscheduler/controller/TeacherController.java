@@ -61,4 +61,13 @@ public class TeacherController implements TeacherzApi {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(teachers);
     }
+
+    @Override
+    public ResponseEntity<List<TeacherExtendedInfo>> findAllExtended(Optional<PageParams> pageParams) {
+        val params = pageMapper.toDto(pageParams);
+        val teachers = teacherService.findAll(params).stream()
+                .map(teacherRestMapper::toExtendedDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(teachers);
+    }
 }

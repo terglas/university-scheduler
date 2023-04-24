@@ -59,6 +59,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /teachers/extended:
+    get:
+      summary: Get all teachers with extended information
+      operationId: findAllExtended
+      tags:
+        - Teacherz
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeacherExtendedInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /teachers/{id}:
     get:
       summary: Get teacher by id
