@@ -214,6 +214,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /subjects/extended:
+    get:
+      summary: Get all subjects with extended information
+      operationId: findAllExtended
+      tags:
+        - Subjectz
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubjectExtendedInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /subjects/{id}:
     get:
       summary: Get subject by id
@@ -1322,7 +1347,6 @@ components:
           type: array
           items:
             type: string
-            format: uuid
         room:
           type: string
         week:

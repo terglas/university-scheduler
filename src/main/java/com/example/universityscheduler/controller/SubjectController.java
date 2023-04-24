@@ -62,4 +62,13 @@ public class SubjectController implements SubjectzApi {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(subjects);
     }
+
+    @Override
+    public ResponseEntity<List<SubjectExtendedInfo>> findAllExtended(Optional<PageParams> pageParams) {
+        val page = pageMapper.toDto(pageParams);
+        val subjects = subjectService.findAll(page).stream()
+                .map(subjectRestMapper::toExtendedDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(subjects);
+    }
 }
