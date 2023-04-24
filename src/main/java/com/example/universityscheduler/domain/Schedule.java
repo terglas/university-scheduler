@@ -1,5 +1,6 @@
 package com.example.universityscheduler.domain;
 
+import com.example.universityscheduler.model.SessionType;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -19,6 +20,9 @@ public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Enumerated(EnumType.STRING)
+    private SessionType sessionType;
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private Subject subject;

@@ -2,6 +2,7 @@ package com.example.universityscheduler.mapper.rest;
 
 import com.example.universityscheduler.domain.Group;
 import com.example.universityscheduler.domain.Schedule;
+import com.example.universityscheduler.model.ScheduleExtendedInfo;
 import com.example.universityscheduler.model.ScheduleInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -32,6 +33,11 @@ public abstract class ScheduleRestMapper {
     @Mapping(target = "subjectId", source = "subject.id")
     @Mapping(target = "teacherId", source = "teacher.id")
     public abstract ScheduleInfo toDto(Schedule schedule);
+
+    @Mapping(target = "groups", source = "groups", qualifiedByName = "toGroupIds")
+    @Mapping(target = "subjectName", source = "subject.title")
+    @Mapping(target = "teacherName", source = "teacher.fullName")
+    public abstract ScheduleExtendedInfo toExtendedDto(Schedule schedule);
 
     @Named("toGroups")
     protected List<Group> toGroups(List<UUID> groupIds) {

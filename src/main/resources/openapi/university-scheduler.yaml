@@ -1057,6 +1057,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /schedules/{id}/extended:
+    get:
+      summary: Get extended schedule by id
+      operationId: findExtendedById
+      tags:
+        - Schedulez
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduleExtendedInfo'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 components:
   parameters:
     pageParams:
@@ -1249,12 +1282,42 @@ components:
         id:
           type: string
           format: uuid
+        sessionType:
+          $ref: '#/components/schemas/SessionType'
         subjectId:
           type: string
           format: uuid
         teacherId:
           type: string
           format: uuid
+        groups:
+          type: array
+          items:
+            type: string
+            format: uuid
+        room:
+          type: string
+        week:
+          $ref: '#/components/schemas/Week'
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+
+    ScheduleExtendedInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sessionType:
+          $ref: '#/components/schemas/SessionType'
+        subjectName:
+          type: string
+        teacherName:
+          type: string
         groups:
           type: array
           items:
@@ -1330,3 +1393,11 @@ components:
           $ref: '#/components/schemas/SearchId'
         searchType:
           $ref: '#/components/schemas/SearchType'
+
+    SessionType:
+      type: string
+      description: Session type
+      enum:
+        - LECTURE
+        - LABORATORY_WORK
+        - PRACTICE

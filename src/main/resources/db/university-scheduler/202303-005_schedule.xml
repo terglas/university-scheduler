@@ -15,6 +15,9 @@
             <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="session_type" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
             <column name="room" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>

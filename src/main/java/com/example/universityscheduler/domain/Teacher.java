@@ -43,4 +43,11 @@ public class Teacher {
     public int hashCode() {
         return Objects.hash(id, firstName, middleName, lastName, qualification, email, phoneNumber, department);
     }
+
+    public String getFullName() {
+        if(middleName.isEmpty() || middleName.isBlank()) {
+            return firstName + " " + lastName;
+        }
+        return firstName + " " + middleName.charAt(0) + " " + lastName;
+    }
 }

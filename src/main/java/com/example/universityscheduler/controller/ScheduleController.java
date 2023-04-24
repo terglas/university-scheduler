@@ -5,6 +5,7 @@ import com.example.universityscheduler.mapper.PageMapper;
 import com.example.universityscheduler.mapper.SearchMapper;
 import com.example.universityscheduler.mapper.rest.ScheduleRestMapper;
 import com.example.universityscheduler.model.PageParams;
+import com.example.universityscheduler.model.ScheduleExtendedInfo;
 import com.example.universityscheduler.model.ScheduleInfo;
 import com.example.universityscheduler.model.SearchType;
 import com.example.universityscheduler.service.ScheduleService;
@@ -64,5 +65,11 @@ public class ScheduleController implements SchedulezApi {
         val schedule = scheduleRestMapper.toEntity(scheduleInfo);
         val savedScheduleInfo = scheduleRestMapper.toDto(scheduleService.update(schedule));
         return ResponseEntity.ok(savedScheduleInfo);
+    }
+
+    @Override
+    public ResponseEntity<ScheduleExtendedInfo> findExtendedById(UUID id) {
+        val scheduleInfo = scheduleRestMapper.toExtendedDto(scheduleService.findById(id));
+        return ResponseEntity.ok(scheduleInfo);
     }
 }
