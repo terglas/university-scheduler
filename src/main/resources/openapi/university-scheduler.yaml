@@ -22,7 +22,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TeacherInfo'
+                  $ref: '#/components/schemas/TeacherShortInfo'
         '500':
           description: Internal Server Error
           content:
@@ -38,7 +38,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TeacherInfo'
+              $ref: '#/components/schemas/TeacherExtendedInfo'
         required: true
       responses:
         '201':
@@ -46,7 +46,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TeacherInfo'
+                $ref: '#/components/schemas/TeacherExtendedInfo'
         '400':
           description: Bad Request
           content:
@@ -78,7 +78,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TeacherInfo'
+                $ref: '#/components/schemas/TeacherExtendedInfo'
         '404':
           description: Not Found
           content:
@@ -107,7 +107,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TeacherInfo'
+              $ref: '#/components/schemas/TeacherExtendedInfo'
         required: true
       responses:
         '200':
@@ -115,7 +115,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TeacherInfo'
+                $ref: '#/components/schemas/TeacherExtendedInfo'
         '400':
           description: Bad Request
           content:
@@ -1109,13 +1109,40 @@ components:
           description: Total pages
           type: integer
 
-    TeacherInfo:
+    TeacherShortInfo:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        name:
+        firstName:
+          type: string
+        middleName:
+          type: string
+        lastName:
+          type: string
+        department:
+          type: string
+
+    TeacherExtendedInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        middleName:
+          type: string
+        lastName:
+          type: string
+        qualification:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        department:
           type: string
 
     SubjectInfo:

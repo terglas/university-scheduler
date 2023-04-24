@@ -15,8 +15,26 @@
             <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="first_name" type="varchar(255)">
                 <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qualification" type="varchar(128)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="email" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="varchar(15)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="department" type="varchar(128)">
+                <constraints nullable="true"/>
             </column>
         </createTable>
         <rollback>

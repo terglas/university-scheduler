@@ -4,7 +4,8 @@ import com.example.universityscheduler.api.TeacherzApi;
 import com.example.universityscheduler.mapper.PageMapper;
 import com.example.universityscheduler.mapper.rest.TeacherRestMapper;
 import com.example.universityscheduler.model.PageParams;
-import com.example.universityscheduler.model.TeacherInfo;
+import com.example.universityscheduler.model.TeacherExtendedInfo;
+import com.example.universityscheduler.model.TeacherShortInfo;
 import com.example.universityscheduler.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -27,16 +28,16 @@ public class TeacherController implements TeacherzApi {
     private final PageMapper pageMapper;
 
     @Override
-    public ResponseEntity<TeacherInfo> create(TeacherInfo teacherDTO) {
+    public ResponseEntity<TeacherExtendedInfo> create(TeacherExtendedInfo teacherDTO) {
         val teacher = teacherRestMapper.toEntity(teacherDTO);
-        val savedTeacherDto = teacherRestMapper.toDto(teacherService.save(teacher));
+        val savedTeacherDto = teacherRestMapper.toExtendedDto(teacherService.save(teacher));
         URI location = UriComponentsBuilder.fromPath("/teachers/id").buildAndExpand(savedTeacherDto.getId()).toUri();
         return ResponseEntity.created(location).body(savedTeacherDto);
     }
     @Override
-    public ResponseEntity<TeacherInfo> update(UUID id, TeacherInfo teacherDTO) {
+    public ResponseEntity<TeacherExtendedInfo> update(UUID id, TeacherExtendedInfo teacherDTO) {
         val teacher = teacherRestMapper.toEntity(teacherDTO);
-        val savedTeacherDto = teacherRestMapper.toDto(teacherService.update(teacher));
+        val savedTeacherDto = teacherRestMapper.toExtendedDto(teacherService.update(teacher));
         return ResponseEntity.ok(savedTeacherDto);
     }
 
@@ -47,16 +48,16 @@ public class TeacherController implements TeacherzApi {
     }
 
     @Override
-    public ResponseEntity<TeacherInfo> findById(UUID id) {
-        val teacherDto = teacherRestMapper.toDto(teacherService.findById(id));
+    public ResponseEntity<TeacherExtendedInfo> findById(UUID id) {
+        val teacherDto = teacherRestMapper.toExtendedDto(teacherService.findById(id));
         return ResponseEntity.ok(teacherDto);
     }
 
     @Override
-    public ResponseEntity<List<TeacherInfo>> findAll(Optional<PageParams> pageParams) {
+    public ResponseEntity<List<TeacherShortInfo>> findAll(Optional<PageParams> pageParams) {
         val params = pageMapper.toDto(pageParams);
         val teachers = teacherService.findAll(params).stream()
-                .map(teacherRestMapper::toDto)
+                .map(teacherRestMapper::toShortDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(teachers);
     }

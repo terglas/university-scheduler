@@ -18,7 +18,14 @@ public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String name;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String qualification;
+    private String email;
+    private String phoneNumber;
+    private String department;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "teacher")
@@ -34,6 +41,6 @@ public class Teacher {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, firstName, middleName, lastName, qualification, email, phoneNumber, department);
     }
 }
