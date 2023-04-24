@@ -45,12 +45,12 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .toLocalTime())
                 .endTime(schedule.getEndTime()
                         .toLocalTime());
-        List<TimeInterval> teacherTimeIntervals = IntervalUtils.formInterval(teacherService.findById(schedule.getTeacher().getId()).getSchedules());
+        List<TimeInterval> teacherTimeIntervals = IntervalUtils.formInterval(teacherService.findById(schedule.getTeacher().getId()).getSchedules(), schedule.getWeek());
         // FIXME n + 1 problem
         List<TimeInterval> groupTimeInterval = schedule.getGroups().stream().map(g -> IntervalUtils.formInterval(groupService.findById(g.getId())
-                .getSchedules())).flatMap(Collection::stream).collect(Collectors.toList());
+                .getSchedules(), schedule.getWeek())).flatMap(Collection::stream).collect(Collectors.toList());
 
-        List<TimeInterval> roomTimeInterval = IntervalUtils.formInterval(scheduleRepository.findByRoom(schedule.getRoom()));
+        List<TimeInterval> roomTimeInterval = IntervalUtils.formInterval(scheduleRepository.findByRoom(schedule.getRoom()), schedule.getWeek());
         if (IntervalUtils.doesIntervalFit(timeInterval, teacherTimeIntervals) && IntervalUtils.doesIntervalFit(timeInterval, groupTimeInterval) && IntervalUtils.doesIntervalFit(timeInterval, roomTimeInterval)) {
             return scheduleRepository.save(schedule);
         }

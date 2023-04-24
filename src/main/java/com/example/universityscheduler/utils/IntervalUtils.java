@@ -26,8 +26,10 @@ public class IntervalUtils {
         return true;
     }
 
-    public List<TimeInterval> formInterval(List<Schedule> schedules) {
-        return schedules.stream().map(s -> new TimeInterval()
+    public List<TimeInterval> formInterval(List<Schedule> schedules, Schedule.Week week) {
+        return schedules.stream()
+                .filter(s -> s.getWeek().equals(week))
+                .map(s -> new TimeInterval()
                 .startTime(s.getStartTime()
                         .toLocalTime())
                 .endTime(s.getEndTime()
