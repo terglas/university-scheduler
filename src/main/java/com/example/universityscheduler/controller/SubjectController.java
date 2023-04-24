@@ -4,7 +4,8 @@ import com.example.universityscheduler.api.SubjectzApi;
 import com.example.universityscheduler.mapper.PageMapper;
 import com.example.universityscheduler.mapper.rest.SubjectRestMapper;
 import com.example.universityscheduler.model.PageParams;
-import com.example.universityscheduler.model.SubjectInfo;
+import com.example.universityscheduler.model.SubjectExtendedInfo;
+import com.example.universityscheduler.model.SubjectShortInfo;
 import com.example.universityscheduler.service.SubjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -27,17 +28,17 @@ public class SubjectController implements SubjectzApi {
     private final PageMapper pageMapper;
 
     @Override
-    public ResponseEntity<SubjectInfo> create(SubjectInfo subjectDTO) {
+    public ResponseEntity<SubjectExtendedInfo> create(SubjectExtendedInfo subjectDTO) {
         val subject = subjectRestMapper.toEntity(subjectDTO);
-        val savedSubjectDto = subjectRestMapper.toDto(subjectService.save(subject));
+        val savedSubjectDto = subjectRestMapper.toExtendedDto(subjectService.save(subject));
         URI location = UriComponentsBuilder.fromPath("/subjects/id").buildAndExpand(savedSubjectDto.getId()).toUri();
         return ResponseEntity.created(location).body(savedSubjectDto);
     }
 
     @Override
-    public ResponseEntity<SubjectInfo> update(UUID id, SubjectInfo subjectDTO) {
+    public ResponseEntity<SubjectExtendedInfo> update(UUID id, SubjectExtendedInfo subjectDTO) {
         val subject = subjectService.update(subjectRestMapper.toEntity(subjectDTO));
-        val subjectInfo = subjectRestMapper.toDto(subjectService.update(subject));
+        val subjectInfo = subjectRestMapper.toExtendedDto(subjectService.update(subject));
         return ResponseEntity.ok(subjectInfo);
     }
 
@@ -47,17 +48,17 @@ public class SubjectController implements SubjectzApi {
         return ResponseEntity.ok().build();
     }
     @Override
-    public ResponseEntity<SubjectInfo> findById(UUID id) {
+    public ResponseEntity<SubjectExtendedInfo> findById(UUID id) {
         val subject = subjectService.findById(id);
-        val subjectDto = subjectRestMapper.toDto(subject);
+        val subjectDto = subjectRestMapper.toExtendedDto(subject);
         return ResponseEntity.ok(subjectDto);
     }
 
     @Override
-    public ResponseEntity<List<SubjectInfo>> findAll(Optional<PageParams> pageParams) {
+    public ResponseEntity<List<SubjectShortInfo>> findAll(Optional<PageParams> pageParams) {
         val page = pageMapper.toDto(pageParams);
         val subjects = subjectService.findAll(page).stream()
-                .map(subjectRestMapper::toDto)
+                .map(subjectRestMapper::toShortDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(subjects);
     }

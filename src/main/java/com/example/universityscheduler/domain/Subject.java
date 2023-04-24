@@ -19,6 +19,9 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String title;
+    private String code;
+    private String description;
+    private Short credits;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

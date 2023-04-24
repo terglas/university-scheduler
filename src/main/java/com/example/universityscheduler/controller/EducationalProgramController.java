@@ -6,7 +6,7 @@ import com.example.universityscheduler.mapper.rest.EducationalProgramRestMapper;
 import com.example.universityscheduler.model.EducationalProgramExtendedInfo;
 import com.example.universityscheduler.model.EducationalProgramInfo;
 import com.example.universityscheduler.model.PageParams;
-import com.example.universityscheduler.model.SubjectInfo;
+import com.example.universityscheduler.model.SubjectShortInfo;
 import com.example.universityscheduler.service.EducationalProgramService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -66,7 +66,7 @@ public class EducationalProgramController implements EducationalProgramzApi {
     }
 
     @Override
-    public ResponseEntity<SubjectInfo> addSubject(UUID id, UUID subjectId) {
+    public ResponseEntity<SubjectShortInfo> addSubject(UUID id, UUID subjectId) {
         educationalProgramService.addSubject(id, subjectId);
         return ResponseEntity.ok().build();
     }

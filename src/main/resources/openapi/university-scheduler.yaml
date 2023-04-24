@@ -177,7 +177,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SubjectInfo'
+                  $ref: '#/components/schemas/SubjectShortInfo'
         '500':
           description: Internal Server Error
           content:
@@ -193,7 +193,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SubjectInfo'
+              $ref: '#/components/schemas/SubjectExtendedInfo'
         required: true
       responses:
         '201':
@@ -201,7 +201,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubjectInfo'
+                $ref: '#/components/schemas/SubjectExtendedInfo'
         '400':
           description: Bad Request
           content:
@@ -233,7 +233,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubjectInfo'
+                $ref: '#/components/schemas/SubjectExtendedInfo'
         '404':
           description: Not Found
           content:
@@ -262,7 +262,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SubjectInfo'
+              $ref: '#/components/schemas/SubjectExtendedInfo'
         required: true
       responses:
         '200':
@@ -270,7 +270,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubjectInfo'
+                $ref: '#/components/schemas/SubjectExtendedInfo'
         '400':
           description: Bad Request
           content:
@@ -687,7 +687,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SubjectInfo'
+                $ref: '#/components/schemas/SubjectShortInfo'
         '400':
           description: Bad Request
           content:
@@ -1145,7 +1145,7 @@ components:
         department:
           type: string
 
-    SubjectInfo:
+    SubjectShortInfo:
       type: object
       properties:
         id:
@@ -1153,6 +1153,24 @@ components:
           format: uuid
         title:
           type: string
+        code:
+          type: string
+
+    SubjectExtendedInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        code:
+          type: string
+        description:
+          type: string
+        credits:
+          type: integer
+          format: int32
 
     UniversityInfo:
       type: object
@@ -1208,7 +1226,7 @@ components:
         subjects:
           type: array
           items:
-            $ref: '#/components/schemas/SubjectInfo'
+            $ref: '#/components/schemas/SubjectShortInfo'
 
     GroupInfo:
       type: object
