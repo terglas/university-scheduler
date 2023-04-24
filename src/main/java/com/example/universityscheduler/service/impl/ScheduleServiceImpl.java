@@ -44,25 +44,12 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .toLocalTime())
                 .endTime(schedule.getEndTime()
                         .toLocalTime());
-        List<TimeInterval> teacherTimeIntervals = teacherService.findById(schedule.getTeacher().getId()).getSchedules().stream()
-                .map(s -> new TimeInterval()
-                        .startTime(s.getStartTime()
-                                .toLocalTime())
-                        .endTime(s.getEndTime()
-                                .toLocalTime())).collect(Collectors.toList());
+        List<TimeInterval> teacherTimeIntervals = IntervalUtils.formInterval(teacherService.findById(schedule.getTeacher().getId()).getSchedules());
         // FIXME n + 1 problem
-        List<TimeInterval> groupTimeInterval = schedule.getGroups().stream().map(g -> groupService.findById(g.getId())
-                .getSchedules().stream().map(s -> new TimeInterval()
-                        .startTime(s.getStartTime()
-                                .toLocalTime())
-                        .endTime(s.getEndTime()
-                                .toLocalTime())).collect(Collectors.toList())).flatMap(Collection::stream).collect(Collectors.toList());
+        List<TimeInterval> groupTimeInterval = schedule.getGroups().stream().map(g -> IntervalUtils.formInterval(groupService.findById(g.getId())
+                .getSchedules())).flatMap(Collection::stream).collect(Collectors.toList());
 
-        List<TimeInterval> roomTimeInterval = scheduleRepository.findByRoom(schedule.getRoom()).stream().map(s -> new TimeInterval()
-                        .startTime(s.getStartTime()
-                                .toLocalTime())
-                        .endTime(s.getEndTime()
-                                .toLocalTime())).collect(Collectors.toList());
+        List<TimeInterval> roomTimeInterval = IntervalUtils.formInterval(scheduleRepository.findByRoom(schedule.getRoom()));
         if (IntervalUtils.doesIntervalFit(timeInterval, teacherTimeIntervals) && IntervalUtils.doesIntervalFit(timeInterval, groupTimeInterval) && IntervalUtils.doesIntervalFit(timeInterval, roomTimeInterval)) {
             return scheduleRepository.save(schedule);
         }
