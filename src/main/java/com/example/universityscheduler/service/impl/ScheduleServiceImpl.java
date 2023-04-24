@@ -6,8 +6,12 @@ import com.example.universityscheduler.mapper.ScheduleMapper;
 import com.example.universityscheduler.model.PageParams;
 import com.example.universityscheduler.model.SearchQuery;
 import com.example.universityscheduler.model.SearchType;
+import com.example.universityscheduler.model.TimeInterval;
 import com.example.universityscheduler.repository.ScheduleRepository;
+import com.example.universityscheduler.service.GroupService;
 import com.example.universityscheduler.service.ScheduleService;
+import com.example.universityscheduler.service.TeacherService;
+import com.example.universityscheduler.utils.IntervalUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.PageRequest;
@@ -15,9 +19,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -27,16 +33,47 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final ScheduleMapper scheduleMapper;
+    private final TeacherService teacherService;
+    private final GroupService groupService;
 
     @Override
     public Schedule save(Schedule schedule) {
-        return scheduleRepository.save(schedule);
+
+        TimeInterval timeInterval = new TimeInterval()
+                .startTime(schedule.getStartTime()
+                        .toLocalTime())
+                .endTime(schedule.getEndTime()
+                        .toLocalTime());
+        List<TimeInterval> teacherTimeIntervals = teacherService.findById(schedule.getTeacher().getId()).getSchedules().stream()
+                .map(s -> new TimeInterval()
+                        .startTime(s.getStartTime()
+                                .toLocalTime())
+                        .endTime(s.getEndTime()
+                                .toLocalTime())).collect(Collectors.toList());
+        // FIXME n + 1 problem
+        List<TimeInterval> groupTimeInterval = schedule.getGroups().stream().map(g -> groupService.findById(g.getId())
+                .getSchedules().stream().map(s -> new TimeInterval()
+                        .startTime(s.getStartTime()
+                                .toLocalTime())
+                        .endTime(s.getEndTime()
+                                .toLocalTime())).collect(Collectors.toList())).flatMap(Collection::stream).collect(Collectors.toList());
+
+        List<TimeInterval> roomTimeInterval = scheduleRepository.findByRoom(schedule.getRoom()).stream().map(s -> new TimeInterval()
+                        .startTime(s.getStartTime()
+                                .toLocalTime())
+                        .endTime(s.getEndTime()
+                                .toLocalTime())).collect(Collectors.toList());
+        if (IntervalUtils.doesIntervalFit(timeInterval, teacherTimeIntervals) && IntervalUtils.doesIntervalFit(timeInterval, groupTimeInterval) && IntervalUtils.doesIntervalFit(timeInterval, roomTimeInterval)) {
+            return scheduleRepository.save(schedule);
+        }
+        // TODO custom exception
+        throw new IllegalArgumentException("Schedule does not fit");
     }
 
     @Override
     public List<Schedule> findAll(Optional<SearchQuery> query, PageParams pageParams) {
         val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
-        if(query.isPresent()) {
+        if (query.isPresent()) {
             val searchQuery = query.get();
             return getSchedulesByFilter(searchQuery.getSearchType(), searchQuery.getSearchId(), pageable);
         }
