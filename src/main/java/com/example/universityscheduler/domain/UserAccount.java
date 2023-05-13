@@ -25,6 +25,7 @@ public class UserAccount {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String email;
+    private String password;
     @OneToOne(mappedBy = "userAccount")
     @ToString.Exclude
     private University university;
