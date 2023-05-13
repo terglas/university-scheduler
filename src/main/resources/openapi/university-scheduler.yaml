@@ -1487,10 +1487,6 @@ components:
       properties:
         token:
           type: string
-        refreshToken:
-          type: string
-        tokenType:
-          type: string
 
     SearchId:
       type: string

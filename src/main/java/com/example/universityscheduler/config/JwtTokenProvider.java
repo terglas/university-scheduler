@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtTokenProvider {
   private static final String AUTHORITIES_KEY = "auth";
-  private static final String INVALID_JWT_TOKEN = "Invalid JWT token.";
   private final Key key;
   private final JwtParser jwtParser;
   private final long tokenValidityInMilliseconds;
@@ -36,8 +35,7 @@ public class JwtTokenProvider {
       log.debug("Using a Base64-encoded JWT secret key");
       keyBytes = Decoders.BASE64.decode(secret);
     } else {
-      log.warn("Warning: the JWT key used is not Base64-encoded. " +
-              "We recommend using the `jhipster.security.authentication.jwt.base64-secret` key for optimum security.");
+      log.warn("Warning: the JWT key used is not Base64-encoded.");
       secret = jwtProperties.getSecret();
       keyBytes = secret.getBytes(StandardCharsets.UTF_8);
     }
@@ -80,7 +78,7 @@ public class JwtTokenProvider {
       jwtParser.parseClaimsJws(authToken);
       return true;
     } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException e) {
-      log.trace(INVALID_JWT_TOKEN, e);
+      log.trace("Invalid JWT token", e);
     } catch (IllegalArgumentException e) {
       log.error("Token validation error {}", e.getMessage());
     }

@@ -1,5 +1,6 @@
 package com.example.universityscheduler.config;
 
+import com.example.universityscheduler.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,8 @@ public class JwtFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
+    public static final String BEARER = "Bearer ";
+
     private final JwtTokenProvider tokenProvider;
 
     @Override
@@ -36,9 +39,9 @@ public class JwtFilter extends GenericFilterBean {
 
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER)) {
             return bearerToken.substring(7);
         }
-        return null;
+        throw new NotFoundException("Token not found");
     }
 }
