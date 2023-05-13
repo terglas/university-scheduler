@@ -35,7 +35,7 @@ public class AuthService {
     public void registerUser(UserAccount user) {
         log.info("Begin user {} registration", user.getEmail());
         if (existsEmail(user.getEmail())) {
-            throw new ForbiddenException();
+            throw new ForbiddenException("User with this email already exists");
         }
         userRepo.save(user);
         log.info("User {} has been successfully registered", user.getEmail());
@@ -54,7 +54,7 @@ public class AuthService {
 
         String token = jwtTokenProvider.createToken(authentication);
         if (token == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("Token not found");
         }
         return new AuthResponse().token(token);
     }
