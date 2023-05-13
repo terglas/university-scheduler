@@ -34,6 +34,8 @@ paths:
       operationId: create
       tags:
         - Teacherz
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -121,6 +123,8 @@ paths:
       operationId: update
       tags:
         - Teacherz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -164,6 +168,8 @@ paths:
       operationId: deleteById
       tags:
         - Teacherz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -214,6 +220,8 @@ paths:
       operationId: create
       tags:
         - Subjectz
+      security:
+        - bearerAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -301,6 +309,8 @@ paths:
       operationId: update
       tags:
         - Subjectz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -344,6 +354,8 @@ paths:
       operationId: deleteById
       tags:
         - Subjectz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -394,6 +406,8 @@ paths:
       operationId: create
       tags:
         - Universitiez
+      security:
+        - bearerAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -456,6 +470,8 @@ paths:
       operationId: update
       tags:
         - Universitiez
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -499,6 +515,8 @@ paths:
       operationId: deleteById
       tags:
         - Universitiez
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -550,6 +568,8 @@ paths:
       operationId: create
       tags:
         - EducationalProgramz
+      security:
+        - bearerAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -613,6 +633,8 @@ paths:
       operationId: update
       tags:
         - EducationalProgramz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -656,6 +678,8 @@ paths:
       operationId: deleteById
       tags:
         - EducationalProgramz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -718,6 +742,8 @@ paths:
       operationId: addSubject
       tags:
         - EducationalProgramz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -761,6 +787,8 @@ paths:
       operationId: deleteSubject
       tags:
         - EducationalProgramz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -819,6 +847,8 @@ paths:
       operationId: create
       tags:
         - Groupz
+      security:
+        - bearerAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -882,6 +912,8 @@ paths:
       operationId: update
       tags:
         - Groupz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -925,6 +957,8 @@ paths:
       operationId: deleteById
       tags:
         - Groupz
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -978,6 +1012,8 @@ paths:
       operationId: create
       tags:
         - Schedulez
+      security:
+        - bearerAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -1067,6 +1103,8 @@ paths:
       operationId: update
       tags:
         - Schedulez
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -1110,6 +1148,8 @@ paths:
       operationId: deleteById
       tags:
         - Schedulez
+      security:
+        - bearerAuth: [ ]
       parameters:
         - name: id
           in: path
@@ -1199,6 +1239,12 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/SearchType'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 
   schemas:
     PageParams:
