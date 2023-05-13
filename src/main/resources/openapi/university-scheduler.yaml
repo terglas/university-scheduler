@@ -1528,3 +1528,20 @@ components:
             endTime:
               type: string
               format: time
+
+    ApiResponseError:
+        type: object
+        description: Error response
+        required:
+            - status
+            - message
+            - timestamp
+        properties:
+            message:
+              type: string
+            status:
+              type: integer
+              format: int32
+            timestamp:
+              type: string
+              format: date-time
