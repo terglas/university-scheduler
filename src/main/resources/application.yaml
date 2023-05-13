@@ -1,14 +1,5 @@
 server:
   port: ${PORT:8080}
-keycloak:
-  realm: university-scheduler-realm
-  auth-server-url: http://localhost:8087/auth
-  resource: university-scheduler
-  public-client: true
-  bearer-only: true
-  credentials:
-    secret: K38CvXIgBEP3uRnNO42QNWRNhJ2bP4r0
-  ssl-required: none
 spring:
   jpa:
     mapping-resources:
@@ -24,9 +15,8 @@ spring:
       add-mappings: false
   liquibase:
     change-log: classpath:db/university-scheduler-changelog.xml
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${keycloak.auth-server-url}/realms/${keycloak.realm}
-          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+    #refactor
+jwt:
+  base64-secret: "oeoparhjoejndfsplofdnvljisafjasdflkjasdfgkursseuhgiguikbrlkbvxcjnviuerhiyuohalikhfohaouphuifhkjsdasihaeygfiuahwophgoheehdgiuuhfdouzhrfuklahseopghjsophgdjhfjsajohdkuhaiuhaphapuosehlfhslhfjsouiehopfahwpoehfauosjdfiaj="
+  token-validity-in-seconds: 86400
+  content-security-policy: "default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:"
