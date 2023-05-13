@@ -1,6 +1,5 @@
 package com.example.universityscheduler.config;
 
-import com.example.universityscheduler.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -42,6 +41,6 @@ public class JwtFilter extends GenericFilterBean {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER)) {
             return bearerToken.substring(7);
         }
-        throw new NotFoundException("Token not found");
+        return null;
     }
 }
