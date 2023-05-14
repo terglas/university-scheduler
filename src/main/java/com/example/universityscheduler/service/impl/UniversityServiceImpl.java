@@ -35,6 +35,12 @@ public class UniversityServiceImpl implements UniversityService {
     }
 
     @Override
+    public University findByCode(String code) {
+        return universityRepository.findByCode(code)
+                .orElseThrow(() -> new NotFoundException(String.format("University not found: %S", code)));
+    }
+
+    @Override
     public List<University> findAll(PageParams pageParams) {
         val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
         return universityRepository.findAll(pageable).getContent();

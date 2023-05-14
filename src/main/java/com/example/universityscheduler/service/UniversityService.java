@@ -10,6 +10,8 @@ public interface UniversityService {
 
     University save(University university);
     University findById(UUID id);
+
+    University findByCode(String code);
     List<University> findAll(PageParams pageParams);
     University update(University university);
     void delete(UUID id);
