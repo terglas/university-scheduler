@@ -1356,6 +1356,9 @@ components:
         credits:
           type: integer
           format: int32
+        universityId:
+            type: string
+            format: uuid
 
     UniversityInfo:
       type: object
@@ -1591,3 +1594,5 @@ components:
         universityId:
           type: string
           format: uuid
+        universityCode:
+          type: string
