@@ -1371,6 +1371,8 @@ components:
         userId:
           type: string
           format: uuid
+        code:
+          type: string
 
     Error:
       type: object
