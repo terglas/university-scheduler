@@ -28,6 +28,11 @@ public class Subject {
     @OneToMany(mappedBy = "subject")
     private List<Schedule> schedules;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private University university;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
