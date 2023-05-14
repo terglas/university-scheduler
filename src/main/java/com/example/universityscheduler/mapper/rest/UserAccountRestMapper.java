@@ -9,5 +9,6 @@ import org.mapstruct.Mapping;
 public interface UserAccountRestMapper {
 
     @Mapping(target = "universityId", source = "university.id")
+    @Mapping(target = "universityCode", source = "university.code")
     UserInfo toDto(UserAccount userAccount);
 }
