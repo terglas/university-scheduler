@@ -50,14 +50,14 @@ public class EducationalProgramController implements EducationalProgramzApi {
     }
 
     @Override
-    public ResponseEntity<EducationalProgramInfo> findById(UUID id) {
+    public ResponseEntity<EducationalProgramInfo> findById(UUID id, Optional<String> universityCode) {
         val educationalProgram = educationalProgramService.findById(id);
         val educationalProgramDto = educationalProgramRestMapper.toDto(educationalProgram);
         return ResponseEntity.ok(educationalProgramDto);
     }
 
     @Override
-    public ResponseEntity<List<EducationalProgramInfo>> findAll(Optional<PageParams> pageParams) {
+    public ResponseEntity<List<EducationalProgramInfo>> findAll(Optional<PageParams> pageParams, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
         val educationalPrograms = educationalProgramService.findAll(page).stream()
                 .map(educationalProgramRestMapper::toDto)
@@ -78,7 +78,7 @@ public class EducationalProgramController implements EducationalProgramzApi {
     }
 
     @Override
-    public ResponseEntity<EducationalProgramExtendedInfo> findAllSubjects(UUID id) {
+    public ResponseEntity<EducationalProgramExtendedInfo> findAllSubjects(UUID id, Optional<String> universityCode) {
         val educationalProgram = educationalProgramRestMapper.toExtendedDto(educationalProgramService.findById(id));
         return ResponseEntity.ok(educationalProgram);
     }

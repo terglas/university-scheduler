@@ -48,14 +48,14 @@ public class SubjectController implements SubjectzApi {
         return ResponseEntity.ok().build();
     }
     @Override
-    public ResponseEntity<SubjectExtendedInfo> findById(UUID id) {
+    public ResponseEntity<SubjectExtendedInfo> findById(UUID id, Optional<String> universityCode) {
         val subject = subjectService.findById(id);
         val subjectDto = subjectRestMapper.toExtendedDto(subject);
         return ResponseEntity.ok(subjectDto);
     }
 
     @Override
-    public ResponseEntity<List<SubjectShortInfo>> findAll(Optional<PageParams> pageParams) {
+    public ResponseEntity<List<SubjectShortInfo>> findAll(Optional<PageParams> pageParams, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
         val subjects = subjectService.findAll(page).stream()
                 .map(subjectRestMapper::toShortDto)
@@ -64,7 +64,7 @@ public class SubjectController implements SubjectzApi {
     }
 
     @Override
-    public ResponseEntity<List<SubjectExtendedInfo>> findAllExtended(Optional<PageParams> pageParams) {
+    public ResponseEntity<List<SubjectExtendedInfo>> findAllExtended(Optional<PageParams> pageParams, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
         val subjects = subjectService.findAll(page).stream()
                 .map(subjectRestMapper::toExtendedDto)

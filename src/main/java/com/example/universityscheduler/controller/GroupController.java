@@ -41,7 +41,7 @@ public class GroupController implements GroupzApi {
     }
 
     @Override
-    public ResponseEntity<List<GroupInfo>> findAll(Optional<PageParams> pageParams, Optional<String> search) {
+    public ResponseEntity<List<GroupInfo>> findAll(Optional<PageParams> pageParams, Optional<String> search, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
         val groups = groupService.findAll(page, search).stream()
                 .map(groupRestMapper::toDto)
@@ -50,7 +50,7 @@ public class GroupController implements GroupzApi {
     }
 
     @Override
-    public ResponseEntity<GroupInfo> findById(UUID id) {
+    public ResponseEntity<GroupInfo> findById(UUID id, Optional<String> universityCode) {
         val group = groupService.findById(id);
         val groupDto = groupRestMapper.toDto(group);
         return ResponseEntity.ok(groupDto);

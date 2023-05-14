@@ -45,7 +45,7 @@ public class ScheduleController implements SchedulezApi {
     }
 
     @Override
-    public ResponseEntity<List<ScheduleInfo>> findAll(Optional<UUID> searchId, Optional<SearchType> type, Optional<PageParams> pageParams) {
+    public ResponseEntity<List<ScheduleInfo>> findAll(Optional<UUID> searchId, Optional<SearchType> type, Optional<PageParams> pageParams, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
         val searchQuery  = searchMapper.toSearchQuery(searchId, type);
         val schedules = scheduleService.findAll(searchQuery, page).stream()
@@ -55,7 +55,7 @@ public class ScheduleController implements SchedulezApi {
     }
 
     @Override
-    public ResponseEntity<List<ScheduleExtendedInfo>> findAllExtended(Optional<UUID> searchId, Optional<SearchType> type, Optional<PageParams> pageParams) {
+    public ResponseEntity<List<ScheduleExtendedInfo>> findAllExtended(Optional<UUID> searchId, Optional<SearchType> type, Optional<PageParams> pageParams, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
         val searchQuery  = searchMapper.toSearchQuery(searchId, type);
         val schedules = scheduleService.findAll(searchQuery, page).stream()
@@ -65,7 +65,7 @@ public class ScheduleController implements SchedulezApi {
     }
 
     @Override
-    public ResponseEntity<ScheduleInfo> findById(UUID id) {
+    public ResponseEntity<ScheduleInfo> findById(UUID id, Optional<String> universityCode) {
         val scheduleInfo = scheduleRestMapper.toDto(scheduleService.findById(id));
         return ResponseEntity.ok(scheduleInfo);
     }
@@ -78,7 +78,7 @@ public class ScheduleController implements SchedulezApi {
     }
 
     @Override
-    public ResponseEntity<ScheduleExtendedInfo> findExtendedById(UUID id) {
+    public ResponseEntity<ScheduleExtendedInfo> findExtendedById(UUID id, Optional<String> universityCode) {
         val scheduleInfo = scheduleRestMapper.toExtendedDto(scheduleService.findById(id));
         return ResponseEntity.ok(scheduleInfo);
     }
