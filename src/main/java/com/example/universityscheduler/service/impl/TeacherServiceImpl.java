@@ -52,7 +52,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Teacher findById(UUID id) {
-        UserAccount userAccount = userAccountService.getCurrentUser();
+        val userAccount = userAccountService.getCurrentUser();
         return findById(id, userAccount.getUniversity().getId());
     }
 
@@ -67,13 +67,13 @@ public class TeacherServiceImpl implements TeacherService {
         if(universityCode == null) {
             return findById(id);
         }
-        University university = universityService.findByCode(universityCode);
+        val university = universityService.findByCode(universityCode);
         return findById(id, university.getId());
     }
 
     @Override
     public List<Teacher> findAll(PageParams pageParams) {
-        UserAccount userAccount = userAccountService.getCurrentUser();
+        val userAccount = userAccountService.getCurrentUser();
         return findAll(pageParams, userAccount.getUniversity().getId());
     }
 
@@ -88,7 +88,7 @@ public class TeacherServiceImpl implements TeacherService {
         if(universityCode == null) {
             return findAll(pageParams);
         }
-        University university = universityService.findByCode(universityCode);
+        val university = universityService.findByCode(universityCode);
         return findAll(pageParams, university.getId());
     }
 }
