@@ -49,14 +49,14 @@ public class TeacherController implements TeacherzApi {
 
     @Override
     public ResponseEntity<TeacherExtendedInfo> findById(UUID id, Optional<String> universityCode) {
-        val teacherDto = teacherRestMapper.toExtendedDto(teacherService.findById(id));
+        val teacherDto = teacherRestMapper.toExtendedDto(teacherService.findById(id, universityCode.orElse(null)));
         return ResponseEntity.ok(teacherDto);
     }
 
     @Override
     public ResponseEntity<List<TeacherShortInfo>> findAll(Optional<PageParams> pageParams, Optional<String> universityCode) {
         val params = pageMapper.toDto(pageParams);
-        val teachers = teacherService.findAll(params).stream()
+        val teachers = teacherService.findAll(params, universityCode.orElse(null)).stream()
                 .map(teacherRestMapper::toShortDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(teachers);
@@ -65,7 +65,7 @@ public class TeacherController implements TeacherzApi {
     @Override
     public ResponseEntity<List<TeacherExtendedInfo>> findAllExtended(Optional<PageParams> pageParams, Optional<String> universityCode) {
         val params = pageMapper.toDto(pageParams);
-        val teachers = teacherService.findAll(params).stream()
+        val teachers = teacherService.findAll(params, universityCode.orElse(null)).stream()
                 .map(teacherRestMapper::toExtendedDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(teachers);
