@@ -35,6 +35,7 @@ public class University {
     @JoinColumn(name = "user_account_id")
     @ToString.Exclude
     private UserAccount userAccount;
+    private String code;
 
     @Override
     public boolean equals(Object o) {
