@@ -48,7 +48,7 @@ public class ScheduleController implements SchedulezApi {
     public ResponseEntity<List<ScheduleInfo>> findAll(Optional<UUID> searchId, Optional<SearchType> type, Optional<PageParams> pageParams, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
         val searchQuery  = searchMapper.toSearchQuery(searchId, type);
-        val schedules = scheduleService.findAll(searchQuery, page).stream()
+        val schedules = scheduleService.findAll(searchQuery, page, universityCode.orElse(null)).stream()
                 .map(scheduleRestMapper::toDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(schedules);
@@ -58,7 +58,7 @@ public class ScheduleController implements SchedulezApi {
     public ResponseEntity<List<ScheduleExtendedInfo>> findAllExtended(Optional<UUID> searchId, Optional<SearchType> type, Optional<PageParams> pageParams, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
         val searchQuery  = searchMapper.toSearchQuery(searchId, type);
-        val schedules = scheduleService.findAll(searchQuery, page).stream()
+        val schedules = scheduleService.findAll(searchQuery, page, universityCode.orElse(null)).stream()
                 .map(scheduleRestMapper::toExtendedDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(schedules);
@@ -66,7 +66,7 @@ public class ScheduleController implements SchedulezApi {
 
     @Override
     public ResponseEntity<ScheduleInfo> findById(UUID id, Optional<String> universityCode) {
-        val scheduleInfo = scheduleRestMapper.toDto(scheduleService.findById(id));
+        val scheduleInfo = scheduleRestMapper.toDto(scheduleService.findById(id, universityCode.orElse(null)));
         return ResponseEntity.ok(scheduleInfo);
     }
 
@@ -79,7 +79,7 @@ public class ScheduleController implements SchedulezApi {
 
     @Override
     public ResponseEntity<ScheduleExtendedInfo> findExtendedById(UUID id, Optional<String> universityCode) {
-        val scheduleInfo = scheduleRestMapper.toExtendedDto(scheduleService.findById(id));
+        val scheduleInfo = scheduleRestMapper.toExtendedDto(scheduleService.findById(id, universityCode.orElse(null)));
         return ResponseEntity.ok(scheduleInfo);
     }
 }

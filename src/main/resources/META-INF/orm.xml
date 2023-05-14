@@ -6,8 +6,14 @@
     <named-native-query name="Schedule.findByGroupId" result-class="com.example.universityscheduler.domain.Schedule">
         <query>
             <![CDATA[
-                SELECT * FROM schedule s inner join group_schedule gs on s.id = gs.schedule_id
+                SELECT *
+                FROM schedule s
+                         inner join group_schedule gs on s.id = gs.schedule_id
+                         inner join "group" on gs.group_id = "group".id
+                         inner join educational_program ep on ep.id = "group".educational_program_id
+                         inner join university u on u.id = ep.university_id
                 WHERE gs.group_id = :groupId
+                  and u.id = :universityId
             ]]>
         </query>
     </named-native-query>
@@ -15,8 +21,14 @@
     <named-native-query name="Schedule.countByGroupId">
         <query>
             <![CDATA[
-                SELECT COUNT(*) FROM schedule s inner join group_schedule gs on s.id = gs.schedule_id
+                SELECT COUNT(*)
+                FROM schedule s
+                         inner join group_schedule gs on s.id = gs.schedule_id
+                         inner join "group" on gs.group_id = "group".id
+                         inner join educational_program ep on ep.id = "group".educational_program_id
+                         inner join university u on u.id = ep.university_id
                 WHERE gs.group_id = :groupId
+                  and u.id = :universityId
             ]]>
         </query>
     </named-native-query>

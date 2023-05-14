@@ -6,12 +6,12 @@ import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.ScheduleMapper;
 import com.example.universityscheduler.model.PageParams;
 import com.example.universityscheduler.model.SearchQuery;
-import com.example.universityscheduler.model.SearchType;
 import com.example.universityscheduler.model.TimeInterval;
 import com.example.universityscheduler.repository.ScheduleRepository;
 import com.example.universityscheduler.service.GroupService;
 import com.example.universityscheduler.service.ScheduleService;
 import com.example.universityscheduler.service.TeacherService;
+import com.example.universityscheduler.service.UniversityService;
 import com.example.universityscheduler.utils.IntervalUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -36,6 +36,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleMapper scheduleMapper;
     private final TeacherService teacherService;
     private final GroupService groupService;
+    private final UserAccountService userAccountService;
+    private final UniversityService universityService;
 
     @Override
     public Schedule save(Schedule schedule) {
@@ -60,18 +62,48 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<Schedule> findAll(Optional<SearchQuery> query, PageParams pageParams) {
+        val userAccount = userAccountService.getCurrentUser();
+        return findAll(query, pageParams, userAccount.getUniversity().getId());
+    }
+
+    @Override
+    public List<Schedule> findAll(Optional<SearchQuery> searchQuery, PageParams pageParams, UUID universityId) {
         val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
-        if (query.isPresent()) {
-            val searchQuery = query.get();
-            return getSchedulesByFilter(searchQuery.getSearchType(), searchQuery.getSearchId(), pageable);
+        if (searchQuery.isPresent()) {
+            val query = searchQuery.get();
+            return getSchedulesByFilter(query, universityId, pageable);
         }
-        return scheduleRepository.findAll(pageable).getContent();
+        return scheduleRepository.findAllBySubjectUniversityId(universityId, pageable).getContent();
+    }
+
+    @Override
+    public List<Schedule> findAll(Optional<SearchQuery> searchQuery, PageParams pageParams, String universityCode) {
+        if(universityCode == null) {
+            return findAll(searchQuery, pageParams);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findAll(searchQuery, pageParams, university.getId());
     }
 
     @Override
     public Schedule findById(UUID id) {
-        return scheduleRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Schedule not found: %S", id)));
+        val userAccount = userAccountService.getCurrentUser();
+        return findById(id, userAccount.getUniversity().getId());
+    }
+
+    @Override
+    public Schedule findById(UUID id, UUID universityId) {
+        return scheduleRepository.findByIdAndSubjectUniversityId(id, universityId).orElseThrow(
+                () -> new NotFoundException(String.format("Subject not found: %S", id)));
+    }
+
+    @Override
+    public Schedule findById(UUID id, String universityCode) {
+        if(universityCode == null) {
+            return findById(id);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findById(id, university.getId());
     }
 
     @Override
@@ -90,14 +122,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
 
-    private List<Schedule> getSchedulesByFilter(SearchType type, UUID id, Pageable pageable) {
+    private List<Schedule> getSchedulesByFilter(SearchQuery query, UUID universityId, Pageable pageable) {
+        val type = query.getSearchType();
+        val id = query.getSearchId();
         switch (type) {
             case TEACHER:
-                return scheduleRepository.findByTeacherId(id, pageable).getContent();
+                return scheduleRepository.findAllByTeacherIdAndTeacherUniversityId(id, universityId, pageable).getContent();
             case GROUP:
-                return scheduleRepository.findByGroupId(id, pageable).getContent();
+                return scheduleRepository.findByGroupId(id, universityId, pageable).getContent();
             case SUBJECT:
-                return scheduleRepository.findBySubjectId(id, pageable).getContent();
+                return scheduleRepository.findAllBySubjectIdAndSubjectUniversityId(id, universityId, pageable).getContent();
             /* TODO
             case UNIVERSITY:
                 return scheduleRepository.findByUniversityId(id, pageable).getContent();
