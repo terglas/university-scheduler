@@ -11,8 +11,11 @@ import java.util.UUID;
 @Mapper
 public interface TeacherRestMapper {
 
+    @Mapping(target = "university.id", source = "universityId")
     Teacher toEntity(TeacherExtendedInfo teacherDTO);
     Teacher toEntity(TeacherShortInfo teacherDTO);
+
+    @Mapping(target = "universityId", source = "university.id")
     TeacherExtendedInfo toExtendedDto(Teacher teacher);
     TeacherShortInfo toShortDto(Teacher teacher);
     @Mapping(target = "id", source = "teacherId")
