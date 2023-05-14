@@ -1,7 +1,6 @@
 package com.example.universityscheduler.controller;
 
 import com.example.universityscheduler.api.UniversitiezApi;
-import com.example.universityscheduler.domain.University;
 import com.example.universityscheduler.mapper.PageMapper;
 import com.example.universityscheduler.mapper.rest.UniversityRestMapper;
 import com.example.universityscheduler.model.PageParams;
@@ -62,5 +61,11 @@ public class UniversityController implements UniversitiezApi {
         val university = universityRestMapper.toEntity(universityInfo);
         val savedUniversityInfo = universityRestMapper.toDto(universityService.update(university));
         return ResponseEntity.ok(savedUniversityInfo);
+    }
+
+    @Override
+    public ResponseEntity<UniversityInfo> findByCode(String code) {
+        val universityInfo = universityRestMapper.toDto(universityService.findByCode(code));
+        return ResponseEntity.ok(universityInfo);
     }
 }

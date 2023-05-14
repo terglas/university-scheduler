@@ -545,6 +545,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /universities/code:
+    get:
+      summary: Get university by code
+      operationId: findByCode
+      tags:
+        - Universitiez
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UniversityInfo'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /educational-programs:
     get:
