@@ -6,6 +6,7 @@ import com.example.universityscheduler.mapper.SubjectMapper;
 import com.example.universityscheduler.model.PageParams;
 import com.example.universityscheduler.repository.SubjectRepository;
 import com.example.universityscheduler.service.SubjectService;
+import com.example.universityscheduler.service.UniversityService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     private final SubjectRepository subjectRepository;
     private final SubjectMapper subjectMapper;
+    private final UserAccountService userAccountService;
+    private final UniversityService universityService;
 
     @Override
     public Subject save(Subject subject) {
@@ -45,14 +48,43 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Subject findById(UUID id) {
-       return subjectRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Subject not found: %S", id))
-        );
+        val userAccount = userAccountService.getCurrentUser();
+        return findById(id, userAccount.getUniversity().getId());
     }
 
     @Override
-    public List<Subject> findAll(PageParams params) {
-        val pageable = PageRequest.of(params.getPageCurrent() - 1, params.getPageSize());
-        return subjectRepository.findAll(pageable).getContent();
+    public Subject findById(UUID id, UUID universityId) {
+        return subjectRepository.findByIdAndUniversityId(id, universityId).orElseThrow(
+                () -> new NotFoundException(String.format("Subject not found: %S", id)));
+    }
+
+    @Override
+    public Subject findById(UUID id, String universityCode) {
+        if(universityCode == null) {
+            return findById(id);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findById(id, university.getId());
+    }
+
+    @Override
+    public List<Subject> findAll(PageParams pageParams) {
+        val userAccount = userAccountService.getCurrentUser();
+        return findAll(pageParams, userAccount.getUniversity().getId());
+    }
+
+    @Override
+    public List<Subject> findAll(PageParams pageParams, UUID universityId) {
+        val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
+        return subjectRepository.findAllByUniversityId(pageable, universityId).getContent();
+    }
+
+    @Override
+    public List<Subject> findAll(PageParams pageParams, String universityCode) {
+        if(universityCode == null) {
+            return findAll(pageParams);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findAll(pageParams, university.getId());
     }
 }
