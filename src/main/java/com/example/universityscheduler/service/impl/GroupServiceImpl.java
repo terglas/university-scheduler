@@ -44,7 +44,7 @@ public class GroupServiceImpl implements GroupService {
         if(!search.isBlank()) {
             return groupRepository.findAllByTitleContainsAndEducationalProgramUniversityId(search, universityId, pageable).getContent();
         }
-        return groupRepository.findAllEducationalProgramUniversityId(pageable, universityId).getContent();
+        return groupRepository.findAllByEducationalProgramUniversityId(pageable, universityId).getContent();
     }
 
     @Override
@@ -54,6 +54,27 @@ public class GroupServiceImpl implements GroupService {
         }
         val university = universityService.findByCode(universityCode);
         return findAll(pageParams, search, university.getId());
+    }
+
+    @Override
+    public List<Group> findAll(UUID educationalProgramId, PageParams pageParams) {
+        val userAccount = userAccountService.getCurrentUser();
+        return findAll(educationalProgramId, userAccount.getUniversity().getId() ,pageParams);
+    }
+
+    @Override
+    public List<Group> findAll(UUID educationalProgramId, UUID universityId, PageParams pageParams) {
+        val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
+        return groupRepository.findAllByEducationalProgramIdAndEducationalProgramUniversityId(educationalProgramId, universityId, pageable).getContent();
+    }
+
+    @Override
+    public List<Group> findAll(UUID educationalProgramId, String universityCode, PageParams pageParams) {
+        if(universityCode == null) {
+            return findAll(educationalProgramId, pageParams);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findAll(educationalProgramId, university.getId(), pageParams);
     }
 
     @Override

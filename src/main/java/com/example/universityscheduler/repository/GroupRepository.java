@@ -11,7 +11,8 @@ import java.util.UUID;
 public interface GroupRepository  extends JpaRepository<Group, UUID> {
 
     Page<Group> findAllByTitleContainsAndEducationalProgramUniversityId(String title, UUID universityId, Pageable pageable);
-    Page<Group> findAllEducationalProgramUniversityId(Pageable pageable, UUID universityId);
-   Optional<Group> findByIdAndEducationalProgramUniversityId(UUID groupId, UUID universityId);
+    Page<Group> findAllByEducationalProgramUniversityId(Pageable pageable, UUID universityId);
+    Page<Group> findAllByEducationalProgramIdAndEducationalProgramUniversityId(UUID educationalProgramId, UUID universityId, Pageable pageable);
+    Optional<Group> findByIdAndEducationalProgramUniversityId(UUID groupId, UUID universityId);
 
 }

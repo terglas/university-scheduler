@@ -858,6 +858,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+
+  /educational-programs/{educationalProgramId}/groups:
+    get:
+      summary: Get all groups by educational program
+      operationId: findAllByEducationalProgram
+      tags:
+        - Groupz
+      parameters:
+        - name: educationalProgramId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/universityCode'
+        - $ref: '#/components/parameters/pageParams'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /groups:
     get:
       summary: Get all groups

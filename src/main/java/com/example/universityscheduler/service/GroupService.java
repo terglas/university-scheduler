@@ -12,6 +12,9 @@ public interface GroupService {
     List<Group> findAll(PageParams pageParams, String search);
     List<Group> findAll(PageParams pageParams, String search, UUID universityId);
     List<Group> findAll(PageParams pageParams, String search, String universityCode);
+    List<Group> findAll(UUID educationalProgramId, PageParams pageParams);
+    List<Group> findAll(UUID educationalProgramId, UUID universityId, PageParams pageParams);
+    List<Group> findAll(UUID educationalProgramId, String universityCode, PageParams pageParams);
 
     Group findById(UUID id);
     Group findById(UUID id, UUID universityId);
