@@ -2,6 +2,7 @@ package com.example.universityscheduler.controller;
 
 import com.example.universityscheduler.api.GroupzApi;
 import com.example.universityscheduler.mapper.PageMapper;
+import com.example.universityscheduler.mapper.rest.EducationalProgramRestMapper;
 import com.example.universityscheduler.mapper.rest.GroupRestMapper;
 import com.example.universityscheduler.model.GroupInfo;
 import com.example.universityscheduler.model.PageParams;
@@ -26,6 +27,7 @@ public class GroupController implements GroupzApi {
 
     private final GroupService groupService;
     private final GroupRestMapper groupRestMapper;
+    private final EducationalProgramRestMapper educationalProgramRestMapper;
     private final PageMapper pageMapper;
 
     @Override
@@ -55,6 +57,16 @@ public class GroupController implements GroupzApi {
     public ResponseEntity<List<GroupInfo>> findAllByEducationalProgram(UUID id, Optional<String> universityCode, Optional<PageParams> pageParams) {
         val page = pageMapper.toDto(pageParams);
         val groups = groupService.findAll(id, universityCode.orElse(null), page).stream()
+                .map(groupRestMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(groups);
+    }
+
+    @Override
+    public ResponseEntity<List<GroupInfo>> findAllByEducationalProgramAndCourseNumber(UUID educationalProgramId, Integer courseNumber, Optional<String> universityCode, Optional<PageParams> pageParams) {
+        val courseinfo = educationalProgramRestMapper.toCourseDto(courseNumber, educationalProgramId);
+        val page = pageMapper.toDto(pageParams);
+        val groups = groupService.findAll(courseinfo, universityCode.orElse(null), page).stream()
                 .map(groupRestMapper::toDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(groups);

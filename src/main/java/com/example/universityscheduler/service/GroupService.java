@@ -1,6 +1,7 @@
 package com.example.universityscheduler.service;
 
 import com.example.universityscheduler.domain.Group;
+import com.example.universityscheduler.model.CourseInfo;
 import com.example.universityscheduler.model.PageParams;
 
 import java.util.List;
@@ -15,6 +16,9 @@ public interface GroupService {
     List<Group> findAll(UUID educationalProgramId, PageParams pageParams);
     List<Group> findAll(UUID educationalProgramId, UUID universityId, PageParams pageParams);
     List<Group> findAll(UUID educationalProgramId, String universityCode, PageParams pageParams);
+    List<Group> findAll(CourseInfo courseinfo, PageParams pageParams);
+    List<Group> findAll(CourseInfo courseinfo, UUID universityId, PageParams pageParams);
+    List<Group> findAll(CourseInfo courseinfo, String universityCode, PageParams page);
 
     Group findById(UUID id);
     Group findById(UUID id, UUID universityId);

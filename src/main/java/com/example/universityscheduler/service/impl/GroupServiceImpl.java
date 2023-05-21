@@ -4,6 +4,7 @@ package com.example.universityscheduler.service.impl;
 import com.example.universityscheduler.domain.Group;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.GroupMapper;
+import com.example.universityscheduler.model.CourseInfo;
 import com.example.universityscheduler.model.PageParams;
 import com.example.universityscheduler.repository.GroupRepository;
 import com.example.universityscheduler.service.GroupService;
@@ -75,6 +76,27 @@ public class GroupServiceImpl implements GroupService {
         }
         val university = universityService.findByCode(universityCode);
         return findAll(educationalProgramId, university.getId(), pageParams);
+    }
+
+    @Override
+    public List<Group> findAll(CourseInfo courseinfo, PageParams pageParams) {
+        val userAccount = userAccountService.getCurrentUser();
+        return findAll(courseinfo, userAccount.getUniversity().getId() ,pageParams);
+    }
+
+    @Override
+    public List<Group> findAll(CourseInfo courseinfo, UUID universityId, PageParams pageParams) {
+        val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
+        return groupRepository.findAllByEducationalProgramIdAndCourseAndEducationalProgramUniversityId(courseinfo.getEducationalProgramId(), courseinfo.getCourseNumber(), universityId, pageable).getContent();
+    }
+
+    @Override
+    public List<Group> findAll(CourseInfo courseinfo, String universityCode, PageParams page) {
+        if(universityCode == null) {
+            return findAll(courseinfo, page);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findAll(courseinfo, university.getId(), page);
     }
 
     @Override

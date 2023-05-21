@@ -13,6 +13,7 @@ public interface GroupRepository  extends JpaRepository<Group, UUID> {
     Page<Group> findAllByTitleContainsAndEducationalProgramUniversityId(String title, UUID universityId, Pageable pageable);
     Page<Group> findAllByEducationalProgramUniversityId(Pageable pageable, UUID universityId);
     Page<Group> findAllByEducationalProgramIdAndEducationalProgramUniversityId(UUID educationalProgramId, UUID universityId, Pageable pageable);
+    Page<Group> findAllByEducationalProgramIdAndCourseAndEducationalProgramUniversityId(UUID educationalProgramId, Integer course,  UUID universityId, Pageable pageable);
     Optional<Group> findByIdAndEducationalProgramUniversityId(UUID groupId, UUID universityId);
 
 }
