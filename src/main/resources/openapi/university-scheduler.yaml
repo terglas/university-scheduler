@@ -36,7 +36,7 @@ paths:
       tags:
         - Teacherz
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       requestBody:
         content:
           application/json:
@@ -1351,7 +1351,163 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
+  /rooms:
+    get:
+      summary: Get all rooms
+      operationId: findAll
+      tags:
+        - Roomz
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+        - $ref: '#/components/parameters/universityCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoomInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create room
+      operationId: create
+      tags:
+        - Roomz
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomInfo'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /rooms/{roomId}:
+    get:
+      summary: Get room by id
+      operationId: findById
+      tags:
+        - Roomz
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/universityCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomInfo'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update room
+      operationId: update
+      tags:
+        - Roomz
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoomInfo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomInfo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete room
+      operationId: deleteById
+      tags:
+        - Roomz
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   parameters:
     pageParams:
@@ -1488,8 +1644,8 @@ components:
           type: integer
           format: int32
         universityId:
-            type: string
-            format: uuid
+          type: string
+          format: uuid
 
     UniversityInfo:
       type: object
@@ -1687,31 +1843,31 @@ components:
         - PRACTICE
 
     TimeInterval:
-        type: object
-        properties:
-            startTime:
-              type: string
-              format: time
-            endTime:
-              type: string
-              format: time
+      type: object
+      properties:
+        startTime:
+          type: string
+          format: time
+        endTime:
+          type: string
+          format: time
 
     ApiResponseError:
-        type: object
-        description: Error response
-        required:
-            - status
-            - message
-            - timestamp
-        properties:
-            message:
-              type: string
-            status:
-              type: integer
-              format: int32
-            timestamp:
-              type: string
-              format: date-time
+      type: object
+      description: Error response
+      required:
+        - status
+        - message
+        - timestamp
+      properties:
+        message:
+          type: string
+        status:
+          type: integer
+          format: int32
+        timestamp:
+          type: string
+          format: date-time
 
     UserInfo:
       type: object
