@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" version="2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm" version="2.2"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_2.xsd">
 
     <named-native-query name="Schedule.findByGroupId" result-class="com.example.universityscheduler.domain.Schedule">
@@ -29,6 +30,35 @@
                          inner join university u on u.id = ep.university_id
                 WHERE gs.group_id = :groupId
                   and u.id = :universityId
+            ]]>
+        </query>
+    </named-native-query>
+
+    <named-native-query name="EducationalProgram.findCourses">
+        <query>
+            <![CDATA[
+                SELECT DISTINCT g.course
+                FROM "group" g
+                         inner join educational_program ep on ep.id = g.educational_program_id
+                         inner join university u on u.id = ep.university_id
+                WHERE ep.id = :educationalProgramId
+                  and u.id = :universityId
+                ORDER BY g.course
+            ]]>
+        </query>
+    </named-native-query>
+
+    <named-native-query name="EducationalProgram.countByCourses">
+        <query>
+            <![CDATA[
+                SELECT COUNT(*)
+                FROM (SELECT DISTINCT g.course
+                      FROM "group" g
+                               inner join educational_program ep on ep.id = g.educational_program_id
+                               inner join university u on u.id = ep.university_id
+                      WHERE ep.id = :educationalProgramId
+                        and u.id = :universityId
+                      ORDER BY g.course) AS courses
             ]]>
         </query>
     </named-native-query>

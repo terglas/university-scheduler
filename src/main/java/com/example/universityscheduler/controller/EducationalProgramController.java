@@ -3,6 +3,7 @@ package com.example.universityscheduler.controller;
 import com.example.universityscheduler.api.EducationalProgramzApi;
 import com.example.universityscheduler.mapper.PageMapper;
 import com.example.universityscheduler.mapper.rest.EducationalProgramRestMapper;
+import com.example.universityscheduler.model.CourseInfo;
 import com.example.universityscheduler.model.EducationalProgramExtendedInfo;
 import com.example.universityscheduler.model.EducationalProgramInfo;
 import com.example.universityscheduler.model.PageParams;
@@ -81,5 +82,15 @@ public class EducationalProgramController implements EducationalProgramzApi {
     public ResponseEntity<EducationalProgramExtendedInfo> findAllSubjects(UUID id, Optional<String> universityCode) {
         val educationalProgram = educationalProgramRestMapper.toExtendedDto(educationalProgramService.findById(id, universityCode.orElse(null)));
         return ResponseEntity.ok(educationalProgram);
+    }
+
+    @Override
+    public ResponseEntity<List<CourseInfo>> findCourses(UUID educationalProgramId, Optional<String> universityCode, Optional<PageParams> pageParams) {
+        val page = pageMapper.toDto(pageParams);
+        val courses = educationalProgramService.findCourses(educationalProgramId, universityCode.orElse(null), page).stream()
+                .map(course ->
+                        educationalProgramRestMapper.toCourseDto(course, educationalProgramId))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(courses);
     }
 }

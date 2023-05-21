@@ -55,6 +55,27 @@ public class EducationalProgramServiceImpl implements EducationalProgramService 
     }
 
     @Override
+    public List<Integer> findCourses(UUID educationalProgramId, PageParams pageParams) {
+        val userAccount = userAccountService.getCurrentUser();
+        return findCourses(educationalProgramId, userAccount.getUniversity().getId(), pageParams);
+    }
+
+    @Override
+    public List<Integer> findCourses(UUID educationalProgramId, UUID universityId, PageParams pageParams) {
+        val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
+        return educationalProgramRepository.findCourses(educationalProgramId, universityId, pageable).getContent();
+    }
+
+    @Override
+    public List<Integer> findCourses(UUID educationalProgramId, String universityCode, PageParams pageParams) {
+        if(universityCode == null) {
+            return findCourses(educationalProgramId, pageParams);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findCourses(educationalProgramId, university.getId(), pageParams);
+    }
+
+    @Override
     public EducationalProgram findById(UUID id) {
         val userAccount = userAccountService.getCurrentUser();
         return findById(id, userAccount.getUniversity().getId());

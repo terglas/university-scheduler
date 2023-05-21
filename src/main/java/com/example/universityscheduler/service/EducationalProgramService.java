@@ -12,6 +12,10 @@ public interface EducationalProgramService {
     List<EducationalProgram> findAll(PageParams pageParams);
     List<EducationalProgram> findAll(PageParams pageParams, UUID universityId);
     List<EducationalProgram> findAll(PageParams pageParams, String universityCode);
+
+    List<Integer> findCourses(UUID educationalProgramId, PageParams pageParams);
+    List<Integer> findCourses(UUID educationalProgramId, UUID universityId, PageParams pageParams);
+    List<Integer> findCourses(UUID educationalProgramId,String universityCode, PageParams pageParams);
     EducationalProgram findById(UUID id);
     EducationalProgram findById(UUID id, UUID universityId);
     EducationalProgram findById(UUID id, String universityCode);
