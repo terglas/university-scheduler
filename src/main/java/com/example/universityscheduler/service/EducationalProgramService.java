@@ -10,7 +10,11 @@ public interface EducationalProgramService {
 
     EducationalProgram save(EducationalProgram educationalProgram);
     List<EducationalProgram> findAll(PageParams pageParams);
+    List<EducationalProgram> findAll(PageParams pageParams, UUID universityId);
+    List<EducationalProgram> findAll(PageParams pageParams, String universityCode);
     EducationalProgram findById(UUID id);
+    EducationalProgram findById(UUID id, UUID universityId);
+    EducationalProgram findById(UUID id, String universityCode);
     EducationalProgram update(EducationalProgram educationalProgram);
     void delete(UUID id);
 
