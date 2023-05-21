@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GroupController implements GroupzApi {
 
+    private static final String EMPTY_STRING = "";
+
     private final GroupService groupService;
     private final GroupRestMapper groupRestMapper;
     private final PageMapper pageMapper;
@@ -43,7 +45,7 @@ public class GroupController implements GroupzApi {
     @Override
     public ResponseEntity<List<GroupInfo>> findAll(Optional<PageParams> pageParams, Optional<String> search, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
-        val groups = groupService.findAll(page, search).stream()
+        val groups = groupService.findAll(page, search.orElse(EMPTY_STRING), universityCode.orElse(null)).stream()
                 .map(groupRestMapper::toDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(groups);
@@ -51,7 +53,7 @@ public class GroupController implements GroupzApi {
 
     @Override
     public ResponseEntity<GroupInfo> findById(UUID id, Optional<String> universityCode) {
-        val group = groupService.findById(id);
+        val group = groupService.findById(id, universityCode.orElse(null));
         val groupDto = groupRestMapper.toDto(group);
         return ResponseEntity.ok(groupDto);
     }

@@ -7,6 +7,7 @@ import com.example.universityscheduler.mapper.GroupMapper;
 import com.example.universityscheduler.model.PageParams;
 import com.example.universityscheduler.repository.GroupRepository;
 import com.example.universityscheduler.service.GroupService;
+import com.example.universityscheduler.service.UniversityService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,6 +24,8 @@ public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
+    private final UserAccountService userAccountService;
+    private final UniversityService universityService;
 
     @Override
     public Group save(Group group) {
@@ -31,19 +33,48 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<Group> findAll(PageParams pageParams, Optional<String> search) {
+    public List<Group> findAll(PageParams pageParams, String search) {
+        val userAccount = userAccountService.getCurrentUser();
+        return findAll(pageParams, search, userAccount.getUniversity().getId());
+    }
+
+    @Override
+    public List<Group> findAll(PageParams pageParams, String search, UUID universityId) {
         val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
-        String searchValue = search.orElse("");
-        if(!searchValue.isBlank()) {
-            return groupRepository.findAllByTitleContains(searchValue, pageable).getContent();
+        if(!search.isBlank()) {
+            return groupRepository.findAllByTitleContainsAndEducationalProgramUniversityId(search, universityId, pageable).getContent();
         }
-        return groupRepository.findAll(pageable).getContent();
+        return groupRepository.findAllEducationalProgramUniversityId(pageable, universityId).getContent();
+    }
+
+    @Override
+    public List<Group> findAll(PageParams pageParams, String search, String universityCode) {
+        if(universityCode == null) {
+            return findAll(pageParams, search);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findAll(pageParams, search, university.getId());
     }
 
     @Override
     public Group findById(UUID id) {
-        return groupRepository.findById(id).orElseThrow(
+        val userAccount = userAccountService.getCurrentUser();
+        return findById(id, userAccount.getUniversity().getId());
+    }
+
+    @Override
+    public Group findById(UUID id, UUID universityId) {
+        return groupRepository.findByIdAndEducationalProgramUniversityId(id, universityId).orElseThrow(
                 () -> new NotFoundException(String.format("Group not found: %S", id)));
+    }
+
+    @Override
+    public Group findById(UUID id, String universityCode) {
+        if(universityCode == null) {
+            return findById(id);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findById(id, university.getId());
     }
 
     @Override
