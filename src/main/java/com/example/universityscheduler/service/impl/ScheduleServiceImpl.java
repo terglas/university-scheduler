@@ -52,7 +52,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<TimeInterval> groupTimeInterval = schedule.getGroups().stream().map(g -> IntervalUtils.formInterval(groupService.findById(g.getId())
                 .getSchedules(), schedule.getWeek())).flatMap(Collection::stream).collect(Collectors.toList());
 
-        List<TimeInterval> roomTimeInterval = IntervalUtils.formInterval(scheduleRepository.findByRoom(schedule.getRoom()), schedule.getWeek());
+        List<TimeInterval> roomTimeInterval = IntervalUtils.formInterval(scheduleRepository.findByRoomId(schedule.getRoom().getId()), schedule.getWeek());
         if (IntervalUtils.doesIntervalFit(timeInterval, teacherTimeIntervals) && IntervalUtils.doesIntervalFit(timeInterval, groupTimeInterval) && IntervalUtils.doesIntervalFit(timeInterval, roomTimeInterval)) {
             return scheduleRepository.save(schedule);
         }
@@ -129,12 +129,13 @@ public class ScheduleServiceImpl implements ScheduleService {
             case TEACHER:
                 return scheduleRepository.findAllByTeacherIdAndTeacherUniversityId(id, universityId, pageable).getContent();
             case GROUP:
-                return scheduleRepository.findByGroupId(id, universityId, pageable).getContent();
+                return scheduleRepository.findAllByGroupId(id, universityId, pageable).getContent();
             case SUBJECT:
                 return scheduleRepository.findAllBySubjectIdAndSubjectUniversityId(id, universityId, pageable).getContent();
+            //case ROOM:
+                //return scheduleRepository.findAllByRoom(id, pageable).getContent();
+
             /* TODO
-            case UNIVERSITY:
-                return scheduleRepository.findByUniversityId(id, pageable).getContent();
             case EDUCATIONAL_PROGRAM:
                 return scheduleRepository.findByEducationalProgramId(id, pageable).getContent();
             */

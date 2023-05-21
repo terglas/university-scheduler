@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
         uses = {
                 GroupRestMapper.class,
                 SubjectRestMapper.class,
-                TeacherRestMapper.class
+                TeacherRestMapper.class,
+                RoomRestMapper.class
         }
 )
 public abstract class ScheduleRestMapper {
@@ -28,15 +29,18 @@ public abstract class ScheduleRestMapper {
     @Mapping(target = "groups", source = "groups", qualifiedByName = "toGroups")
     @Mapping(target = "subject", source = "subjectId")
     @Mapping(target = "teacher", source = "teacherId")
+    @Mapping(target = "room", source = "roomId")
     public abstract Schedule toEntity(ScheduleInfo scheduleInfo);
     @Mapping(target = "groups", source = "groups", qualifiedByName = "toGroupIds")
     @Mapping(target = "subjectId", source = "subject.id")
     @Mapping(target = "teacherId", source = "teacher.id")
+    @Mapping(target = "roomId", source = "room.id")
     public abstract ScheduleInfo toDto(Schedule schedule);
 
     @Mapping(target = "groups", source = "groups", qualifiedByName = "toGroupNames")
     @Mapping(target = "subjectName", source = "subject.title")
     @Mapping(target = "teacherName", source = "teacher.fullName")
+    @Mapping(target = "room", source = "room.name")
     public abstract ScheduleExtendedInfo toExtendedDto(Schedule schedule);
 
     @Named("toGroups")

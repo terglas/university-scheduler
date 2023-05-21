@@ -37,7 +37,10 @@ public class Schedule {
             inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
             joinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
     private List<Group> groups;
-    private String room;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Room room;
     @Enumerated(EnumType.STRING)
     private Week week;
     private LocalDateTime startTime;
@@ -53,7 +56,7 @@ public class Schedule {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, room, week, startTime, endTime);
+        return Objects.hash(id, week, startTime, endTime);
     }
 
     public enum Week {

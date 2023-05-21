@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20230219153463-1" author="amiroxumbayev">
+        <preConditions>
+            <not>
+                <tableExists tableName="room"/>
+            </not>
+        </preConditions>
+        <createTable tableName="room">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="university_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="room" baseColumnNames="university_id"
+                                 referencedTableName="university" referencedColumnNames="id"
+                                 constraintName="room_university_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropTable tableName="room"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

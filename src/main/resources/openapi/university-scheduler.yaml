@@ -1583,8 +1583,9 @@ components:
           items:
             type: string
             format: uuid
-        room:
+        roomId:
           type: string
+          format: uuid
         week:
           $ref: '#/components/schemas/Week'
         startTime:
@@ -1743,3 +1744,15 @@ components:
         educationalProgramId:
           type: string
           format: uuid
+    RoomInfo:
+      type: object
+      description: Room info
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string

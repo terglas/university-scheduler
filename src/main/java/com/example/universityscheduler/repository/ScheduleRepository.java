@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface ScheduleRepository extends JpaRepository<Schedule, UUID> {
 
     @Query(name = "Schedule.findByGroupId", nativeQuery = true, countName = "Schedule.countByGroupId")
-    Page<Schedule> findByGroupId( @Param("groupId") UUID groupId, @Param("universityId") UUID universityId, Pageable pageable);
+    Page<Schedule> findAllByGroupId( @Param("groupId") UUID groupId, @Param("universityId") UUID universityId, Pageable pageable);
 
     Page<Schedule> findAllByTeacherIdAndTeacherUniversityId(UUID teacherId, UUID universityId, Pageable pageable);
 
@@ -24,5 +24,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, UUID> {
 
     Optional<Schedule> findByIdAndSubjectUniversityId(UUID id, UUID universityId);
 
-    List<Schedule> findByRoom(String room);
+    List<Schedule> findByRoomId(UUID roomId);
 }
