@@ -1912,3 +1912,6 @@ components:
           format: uuid
         name:
           type: string
+        universityId:
+          type: string
+          format: uuid

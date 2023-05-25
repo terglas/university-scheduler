@@ -45,7 +45,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room findById(UUID id, String universityCode) {
-        if(universityCode == null) {
+        if (universityCode == null) {
             return findById(id);
         }
         val university = universityService.findByCode(universityCode);
@@ -65,9 +65,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> findAll(PageParams pageParams, String universityCode) {if(universityCode == null) {
-        return findAll(pageParams);
-    }
+    public List<Room> findAll(PageParams pageParams, String universityCode) {
+        if (universityCode == null) {
+            return findAll(pageParams);
+        }
         val university = universityService.findByCode(universityCode);
         return findAll(pageParams, university.getId());
     }

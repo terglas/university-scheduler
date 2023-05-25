@@ -2,6 +2,7 @@ package com.example.universityscheduler.handler;
 
 import com.example.universityscheduler.controller.EducationalProgramController;
 import com.example.universityscheduler.controller.GroupController;
+import com.example.universityscheduler.controller.RoomController;
 import com.example.universityscheduler.controller.ScheduleController;
 import com.example.universityscheduler.controller.SubjectController;
 import com.example.universityscheduler.controller.TeacherController;
@@ -31,8 +32,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
         EducationalProgramController.class,
         TestController.class,
         SubjectController.class,
-        UniversityController.class
-
+        UniversityController.class,
+        RoomController.class
 })
 @Slf4j
 @RequiredArgsConstructor
