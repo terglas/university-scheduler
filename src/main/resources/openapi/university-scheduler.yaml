@@ -1853,6 +1853,7 @@ components:
         - UNIVERSITY
         - EDUCATIONAL_PROGRAM
         - GROUP
+        - ROOM
 
     SearchQuery:
       type: object

@@ -159,8 +159,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 return scheduleRepository.findAllByGroupId(id, universityId, pageable).getContent();
             case SUBJECT:
                 return scheduleRepository.findAllBySubjectIdAndSubjectUniversityId(id, universityId, pageable).getContent();
-            //case ROOM:
-                //return scheduleRepository.findAllByRoom(id, pageable).getContent();
+            case ROOM:
+                return scheduleRepository.findAllByRoomIdAndRoomUniversityId(id, universityId, pageable).getContent();
 
             /* TODO
             case EDUCATIONAL_PROGRAM:

@@ -21,6 +21,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, UUID> {
 
     Page<Schedule> findAllBySubjectIdAndSubjectUniversityId(UUID subjectId, UUID universityId, Pageable pageable);
 
+    Page<Schedule> findAllByRoomIdAndRoomUniversityId(UUID roomId, UUID universityId, Pageable pageable);
+
     Page<Schedule> findAllBySubjectUniversityId(UUID universityId, Pageable pageable);
 
     Optional<Schedule> findByIdAndSubjectUniversityId(UUID id, UUID universityId);
