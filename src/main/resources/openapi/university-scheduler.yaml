@@ -1794,16 +1794,16 @@ components:
           format: uuid
         sessionType:
           $ref: '#/components/schemas/SessionType'
-        subjectName:
-          type: string
-        teacherName:
-          type: string
+        subject:
+          $ref: '#/components/schemas/SubjectShortInfo'
+        teacher:
+          $ref: '#/components/schemas/TeacherShortInfo'
         groups:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/GroupInfo'
         room:
-          type: string
+          $ref: '#/components/schemas/RoomInfo'
         week:
           $ref: '#/components/schemas/Week'
         startTime:
