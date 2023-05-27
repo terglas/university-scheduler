@@ -1209,6 +1209,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    post:
+      summary: Get all extended compound schedules
+      operationId: findAllCompoundExtended
+      tags:
+        - Schedulez
+      parameters:
+        - $ref: '#/components/parameters/pageParams'
+        - $ref: '#/components/parameters/universityCode'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/SearchQuery'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduleExtendedInfo'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /schedules/{id}:
     get:
