@@ -1215,7 +1215,6 @@ paths:
       tags:
         - Schedulez
       parameters:
-        - $ref: '#/components/parameters/pageParams'
         - $ref: '#/components/parameters/universityCode'
       requestBody:
         content:

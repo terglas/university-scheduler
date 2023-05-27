@@ -87,13 +87,13 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<Schedule> findAll(List<SearchQuery> searchQueries, PageParams pageParams) {
+    public List<Schedule> findAll(List<SearchQuery> searchQueries) {
         val userAccount = userAccountService.getCurrentUser();
-        return findAll(searchQueries, pageParams, userAccount.getUniversity().getId());
+        return findAll(searchQueries, userAccount.getUniversity().getId());
     }
 
     @Override
-    public List<Schedule> findAll(List<SearchQuery> searchQueries, PageParams pageParams, UUID universityId) {
+    public List<Schedule> findAll(List<SearchQuery> searchQueries, UUID universityId) {
         // TODO implement pagination
         //val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
         if (!searchQueries.isEmpty()) {
@@ -104,12 +104,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<Schedule> findAll(List<SearchQuery> searchQueries, PageParams pageParams, String universityCode) {
+    public List<Schedule> findAll(List<SearchQuery> searchQueries, String universityCode) {
         if(universityCode == null) {
-            return findAll(searchQueries, pageParams);
+            return findAll(searchQueries);
         }
         val university = universityService.findByCode(universityCode);
-        return findAll(searchQueries, pageParams, university.getId());
+        return findAll(searchQueries, university.getId());
     }
 
     @Override

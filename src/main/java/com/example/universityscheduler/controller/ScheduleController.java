@@ -66,9 +66,8 @@ public class ScheduleController implements SchedulezApi {
     }
 
     @Override
-    public ResponseEntity<List<ScheduleExtendedInfo>> findAllCompoundExtended(Optional<PageParams> pageParams, Optional<String> universityCode, List<SearchQuery> searchQuery) {
-        val page = pageMapper.toDto(pageParams);
-        val schedules = scheduleService.findAll(searchQuery, page, universityCode.orElse(null)).stream()
+    public ResponseEntity<List<ScheduleExtendedInfo>> findAllCompoundExtended(Optional<String> universityCode, List<SearchQuery> searchQuery) {
+        val schedules = scheduleService.findAll(searchQuery, universityCode.orElse(null)).stream()
                 .map(scheduleRestMapper::toExtendedDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(schedules);
