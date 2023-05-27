@@ -1752,6 +1752,8 @@ components:
         educationalProgramId:
           type: string
           format: uuid
+        educationalProgramName:
+          type: string
 
     ScheduleInfo:
       type: object
