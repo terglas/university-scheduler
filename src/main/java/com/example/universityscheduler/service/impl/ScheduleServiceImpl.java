@@ -97,7 +97,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         // TODO implement pagination
         //val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
         if (!searchQueries.isEmpty()) {
-            val query = SearchScheduleUtils.findAllCompoundSchedules(searchQueries);
+            val query = SearchScheduleUtils.findAllCompoundSchedules(searchQueries, universityId);
             return scheduleRepository.findAll(query);
         }
         return List.of();

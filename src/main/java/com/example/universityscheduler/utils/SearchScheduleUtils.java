@@ -2,40 +2,45 @@ package com.example.universityscheduler.utils;
 
 
 import com.example.universityscheduler.domain.Schedule;
+import com.example.universityscheduler.domain.Teacher;
 import com.example.universityscheduler.model.SearchQuery;
+import com.example.universityscheduler.model.SearchType;
 import lombok.experimental.UtilityClass;
+import lombok.val;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @UtilityClass
 public class SearchScheduleUtils {
 
-    private static final String SEARCH_ID = "searchId";
-    private static final String SEARCH_TYPE = "searchType";
+    private static final String TEACHER_TABLE = "teacher";
+    private static final String TEACHER_ID = "teacherId";
+    private static final String GROUP_ID = "groupId";
+    private static final String SUBJECT_ID = "subjectId";
+    private static final String UNIVERSITY_ID = "universityId";
 
-    public Specification<Schedule> findAllCompoundSchedules(List<SearchQuery> searchQueries) {
+    public Specification<Schedule> findAllCompoundSchedules(List<SearchQuery> searchQueries, UUID universityId) {
         return (root, query, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.conjunction();
+            Join<Schedule, Teacher> teacherJoin = root.join(TEACHER_TABLE, JoinType.LEFT);
+            List<Predicate> predicates = new ArrayList<>();
             for (SearchQuery searchQuery : searchQueries) {
-                Predicate searchPredicate = getSearchPredicate(searchQuery, root, criteriaBuilder);
-                predicate = criteriaBuilder.or(predicate, searchPredicate);
+                if (searchQuery.getSearchType() == SearchType.TEACHER) {
+                    predicates.add(criteriaBuilder.equal(root.get(TEACHER_ID), searchQuery.getSearchId()));
+                } else if (searchQuery.getSearchType() == SearchType.GROUP) {
+                    predicates.add(criteriaBuilder.equal(root.get(GROUP_ID), searchQuery.getSearchId()));
+                } else if (searchQuery.getSearchType() == SearchType.SUBJECT) {
+                    predicates.add(criteriaBuilder.equal(root.get(SUBJECT_ID), searchQuery.getSearchId()));
+                }
             }
-            return predicate;
+            val searchQueryPredicate = criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+            val universityIdPredicate = criteriaBuilder.equal(teacherJoin.get(UNIVERSITY_ID), universityId);
+            return criteriaBuilder.and(searchQueryPredicate, universityIdPredicate);
         };
-    }
-
-    private Predicate getSearchPredicate(SearchQuery searchQuery, Root<Schedule> root, CriteriaBuilder criteriaBuilder) {
-        Path<Object> searchIdPath = root.get(SEARCH_ID);
-        Path<Object> searchTypePath = root.get(SEARCH_TYPE);
-
-        Predicate searchIdPredicate = criteriaBuilder.equal(searchIdPath, searchQuery.getSearchId());
-        Predicate searchTypePredicate = criteriaBuilder.equal(searchTypePath, searchQuery.getSearchType());
-
-        return criteriaBuilder.and(searchIdPredicate, searchTypePredicate);
     }
 }
