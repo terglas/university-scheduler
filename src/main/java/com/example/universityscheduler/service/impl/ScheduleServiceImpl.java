@@ -13,6 +13,7 @@ import com.example.universityscheduler.service.ScheduleService;
 import com.example.universityscheduler.service.TeacherService;
 import com.example.universityscheduler.service.UniversityService;
 import com.example.universityscheduler.utils.IntervalUtils;
+import com.example.universityscheduler.utils.SearchScheduleUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.PageRequest;
@@ -83,6 +84,32 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         val university = universityService.findByCode(universityCode);
         return findAll(searchQuery, pageParams, university.getId());
+    }
+
+    @Override
+    public List<Schedule> findAll(List<SearchQuery> searchQueries, PageParams pageParams) {
+        val userAccount = userAccountService.getCurrentUser();
+        return findAll(searchQueries, pageParams, userAccount.getUniversity().getId());
+    }
+
+    @Override
+    public List<Schedule> findAll(List<SearchQuery> searchQueries, PageParams pageParams, UUID universityId) {
+        // TODO implement pagination
+        //val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
+        if (!searchQueries.isEmpty()) {
+            val query = SearchScheduleUtils.findAllCompoundSchedules(searchQueries);
+            return scheduleRepository.findAll(query);
+        }
+        return List.of();
+    }
+
+    @Override
+    public List<Schedule> findAll(List<SearchQuery> searchQueries, PageParams pageParams, String universityCode) {
+        if(universityCode == null) {
+            return findAll(searchQueries, pageParams);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findAll(searchQueries, pageParams, university.getId());
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.universityscheduler.repository;
 import com.example.universityscheduler.domain.Schedule;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,4 +26,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, UUID> {
     Optional<Schedule> findByIdAndSubjectUniversityId(UUID id, UUID universityId);
 
     List<Schedule> findByRoomId(UUID roomId);
+
+    List<Schedule> findAll(Specification<Schedule> specification);
 }

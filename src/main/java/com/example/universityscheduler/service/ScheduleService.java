@@ -14,6 +14,11 @@ public interface ScheduleService {
     List<Schedule> findAll(Optional<SearchQuery> searchQuery, PageParams pageParams);
     List<Schedule> findAll(Optional<SearchQuery> searchQuery, PageParams pageParams, UUID universityId);
     List<Schedule> findAll(Optional<SearchQuery> searchQuery,PageParams pageParams, String universityCode);
+
+    List<Schedule> findAll(List<SearchQuery> searchQueries, PageParams pageParams);
+    List<Schedule> findAll(List<SearchQuery> searchQueries, PageParams pageParams, UUID universityId);
+    List<Schedule> findAll(List<SearchQuery> searchQueries, PageParams pageParams, String universityCode);
+
     Schedule findById(UUID id);
     Schedule findById(UUID id, UUID universityId);
     Schedule findById(UUID id, String universityCode);

@@ -7,6 +7,7 @@ import com.example.universityscheduler.mapper.rest.ScheduleRestMapper;
 import com.example.universityscheduler.model.PageParams;
 import com.example.universityscheduler.model.ScheduleExtendedInfo;
 import com.example.universityscheduler.model.ScheduleInfo;
+import com.example.universityscheduler.model.SearchQuery;
 import com.example.universityscheduler.model.SearchType;
 import com.example.universityscheduler.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,15 @@ public class ScheduleController implements SchedulezApi {
     public ResponseEntity<List<ScheduleExtendedInfo>> findAllExtended(Optional<UUID> searchId, Optional<SearchType> type, Optional<PageParams> pageParams, Optional<String> universityCode) {
         val page = pageMapper.toDto(pageParams);
         val searchQuery  = searchMapper.toSearchQuery(searchId, type);
+        val schedules = scheduleService.findAll(searchQuery, page, universityCode.orElse(null)).stream()
+                .map(scheduleRestMapper::toExtendedDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(schedules);
+    }
+
+    @Override
+    public ResponseEntity<List<ScheduleExtendedInfo>> findAllCompoundExtended(Optional<PageParams> pageParams, Optional<String> universityCode, List<SearchQuery> searchQuery) {
+        val page = pageMapper.toDto(pageParams);
         val schedules = scheduleService.findAll(searchQuery, page, universityCode.orElse(null)).stream()
                 .map(scheduleRestMapper::toExtendedDto)
                 .collect(Collectors.toList());
