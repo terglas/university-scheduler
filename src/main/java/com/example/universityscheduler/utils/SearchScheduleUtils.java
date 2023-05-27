@@ -2,6 +2,7 @@ package com.example.universityscheduler.utils;
 
 
 import com.example.universityscheduler.domain.Group;
+import com.example.universityscheduler.domain.Room;
 import com.example.universityscheduler.domain.Schedule;
 import com.example.universityscheduler.domain.Subject;
 import com.example.universityscheduler.domain.Teacher;
@@ -25,6 +26,7 @@ public class SearchScheduleUtils {
     private static final String TEACHER_FIELD = "teacher";
     private static final String GROUPS_FIELD = "groups";
     private static final String SUBJECT_FIELD = "subject";
+    private static final String ROOM_FIELD = "room";
     private static final String UNIVERSITY_FIELD = "university";
     private static final String ID = "id";
 
@@ -34,6 +36,7 @@ public class SearchScheduleUtils {
             Join<Teacher, University> universityJoin = teacherJoin.join(UNIVERSITY_FIELD, JoinType.LEFT);
             Join<Schedule, Group> groupJoin = root.join(GROUPS_FIELD, JoinType.LEFT);
             Join<Schedule, Subject> subjectJoin = root.join(SUBJECT_FIELD, JoinType.LEFT);
+            Join<Schedule, Room> roomJoin = root.join(ROOM_FIELD, JoinType.LEFT);
             List<Predicate> predicates = new ArrayList<>();
 
             for (SearchQuery searchQuery : searchQueries) {
@@ -43,6 +46,8 @@ public class SearchScheduleUtils {
                     predicates.add(criteriaBuilder.equal(groupJoin.get(ID), searchQuery.getSearchId()));
                 } else if (searchQuery.getSearchType() == SearchType.SUBJECT) {
                     predicates.add(criteriaBuilder.equal(subjectJoin.get(ID), searchQuery.getSearchId()));
+                } else if (searchQuery.getSearchType() == SearchType.ROOM) {
+                    predicates.add(criteriaBuilder.equal(roomJoin.get(ID), searchQuery.getSearchId()));
                 }
             }
             val searchQueryPredicate = criteriaBuilder.or(predicates.toArray(new Predicate[0]));
