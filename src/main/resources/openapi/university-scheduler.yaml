@@ -1715,6 +1715,10 @@ components:
         universityId:
           type: string
           format: uuid
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupInfo'
 
     EducationalProgramExtendedInfo:
       type: object

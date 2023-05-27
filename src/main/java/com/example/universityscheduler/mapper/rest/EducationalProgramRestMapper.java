@@ -9,7 +9,9 @@ import org.mapstruct.Mapping;
 
 import java.util.UUID;
 
-@Mapper
+@Mapper(
+        uses = {GroupRestMapper.class}
+)
 public interface EducationalProgramRestMapper {
 
     @Mapping(target = "university.id", source = "universityId")

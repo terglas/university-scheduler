@@ -28,6 +28,12 @@ public class EducationalProgram {
             inverseJoinColumns = @JoinColumn(name = "subject_id"),
             joinColumns = @JoinColumn(name = "educational_program_id"))
     private List<Subject> subjects;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "educationalProgram")
+    private List<Group> groups;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     private University university;
