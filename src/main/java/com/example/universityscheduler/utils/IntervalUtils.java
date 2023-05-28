@@ -2,6 +2,8 @@ package com.example.universityscheduler.utils;
 
 import com.example.universityscheduler.domain.Schedule;
 import com.example.universityscheduler.model.TimeInterval;
+import com.example.universityscheduler.model.TimeIntervalWeek;
+import com.example.universityscheduler.model.Week;
 import lombok.experimental.UtilityClass;
 import lombok.val;
 
@@ -34,5 +36,16 @@ public class IntervalUtils {
                         .toLocalTime())
                 .endTime(s.getEndTime()
                         .toLocalTime())).collect(Collectors.toList());
+    }
+
+    public List<TimeIntervalWeek> formInterval(List<Schedule> schedules) {
+        return schedules.stream()
+                .map(s -> new TimeIntervalWeek()
+                        .timeInterval(new TimeInterval()
+                        .startTime(s.getStartTime()
+                                .toLocalTime())
+                        .endTime(s.getEndTime()
+                                .toLocalTime()))
+                        .week(Week.fromValue(s.getWeek().name()))).collect(Collectors.toList());
     }
 }

@@ -1550,7 +1550,6 @@ paths:
           schema:
             type: string
             format: uuid
-        - $ref: '#/components/parameters/week'
         - $ref: '#/components/parameters/universityCode'
       responses:
         '200':
@@ -2004,4 +2003,15 @@ components:
         timeIntervals:
           type: array
           items:
-            $ref: '#/components/schemas/TimeInterval'
+            $ref: '#/components/schemas/TimeIntervalWeek'
+    TimeIntervalWeek:
+      type: object
+      description: Time interval week
+      required:
+        - week
+        - timeIntervals
+      properties:
+        week:
+          $ref: '#/components/schemas/Week'
+        timeInterval:
+          $ref: '#/components/schemas/TimeInterval'

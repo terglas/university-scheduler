@@ -3,7 +3,7 @@ package com.example.universityscheduler.mapper.rest;
 import com.example.universityscheduler.domain.Room;
 import com.example.universityscheduler.model.RoomInfo;
 import com.example.universityscheduler.model.RoomTimeIntervalInfo;
-import com.example.universityscheduler.model.TimeInterval;
+import com.example.universityscheduler.model.TimeIntervalWeek;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,5 +19,5 @@ public interface RoomRestMapper {
     @Mapping(target = "id", source = "roomId")
     Room toEntity(UUID roomId);
 
-    RoomTimeIntervalInfo toDto(Room room, List<TimeInterval> timeIntervals);
+    RoomTimeIntervalInfo toDto(Room room, List<TimeIntervalWeek> timeIntervals);
 }

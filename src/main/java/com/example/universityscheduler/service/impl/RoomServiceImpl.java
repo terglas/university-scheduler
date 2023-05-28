@@ -1,11 +1,10 @@
 package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.Room;
-import com.example.universityscheduler.domain.Schedule.Week;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.RoomMapper;
 import com.example.universityscheduler.model.PageParams;
-import com.example.universityscheduler.model.TimeInterval;
+import com.example.universityscheduler.model.TimeIntervalWeek;
 import com.example.universityscheduler.repository.RoomRepository;
 import com.example.universityscheduler.repository.ScheduleRepository;
 import com.example.universityscheduler.service.RoomService;
@@ -79,24 +78,24 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<TimeInterval> findTimeIntervals(UUID id, Week week) {
+    public List<TimeIntervalWeek> findTimeIntervals(UUID id) {
         val userAccount = userAccountService.getCurrentUser();
-        return findTimeIntervals(id, week, userAccount.getUniversity().getId());
+        return findTimeIntervals(id, userAccount.getUniversity().getId());
     }
 
     @Override
-    public List<TimeInterval> findTimeIntervals(UUID id, Week week, UUID universityId) {
+    public List<TimeIntervalWeek> findTimeIntervals(UUID id, UUID universityId) {
         val room = findById(id, universityId);
-        return IntervalUtils.formInterval(scheduleRepository.findByRoomId(room.getId()), week);
+        return IntervalUtils.formInterval(scheduleRepository.findByRoomId(room.getId()));
     }
 
     @Override
-    public List<TimeInterval> findTimeIntervals(UUID id, Week week, String universityCode) {
+    public List<TimeIntervalWeek> findTimeIntervals(UUID id, String universityCode) {
         if (universityCode == null) {
-            return findTimeIntervals(id, week);
+            return findTimeIntervals(id);
         }
         val university = universityService.findByCode(universityCode);
-        return findTimeIntervals(id, week, university.getId());
+        return findTimeIntervals(id, university.getId());
     }
 
     @Override

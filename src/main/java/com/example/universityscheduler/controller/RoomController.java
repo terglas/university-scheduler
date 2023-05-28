@@ -1,13 +1,11 @@
 package com.example.universityscheduler.controller;
 
 import com.example.universityscheduler.api.RoomzApi;
-import com.example.universityscheduler.domain.Schedule;
 import com.example.universityscheduler.mapper.PageMapper;
 import com.example.universityscheduler.mapper.rest.RoomRestMapper;
 import com.example.universityscheduler.model.PageParams;
 import com.example.universityscheduler.model.RoomInfo;
 import com.example.universityscheduler.model.RoomTimeIntervalInfo;
-import com.example.universityscheduler.model.Week;
 import com.example.universityscheduler.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -55,9 +53,9 @@ public class RoomController implements RoomzApi {
     }
 
     @Override
-    public ResponseEntity<RoomTimeIntervalInfo> findTimeIntervalsByRoomId(UUID roomId, Week week, Optional<String> universityCode) {
+    public ResponseEntity<RoomTimeIntervalInfo> findTimeIntervalsByRoomId(UUID roomId, Optional<String> universityCode) {
         val room = roomService.findById(roomId, universityCode.orElse(null));
-        val timeIntervals = roomService.findTimeIntervals(roomId, Schedule.Week.valueOf(week.getValue()), universityCode.orElse(null));
+        val timeIntervals = roomService.findTimeIntervals(roomId, universityCode.orElse(null));
         return ResponseEntity.ok(roomRestMapper.toDto(room, timeIntervals));
     }
 
