@@ -1537,6 +1537,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /rooms/{roomId}/timeIntervals:
+    get:
+      summary: Get all time intervals of room
+      operationId: findTimeIntervalsByRoomId
+      tags:
+        - Roomz
+      parameters:
+        - name: roomId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - $ref: '#/components/parameters/week'
+        - $ref: '#/components/parameters/universityCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomTimeIntervalInfo'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   parameters:
     pageParams:
@@ -1578,6 +1612,14 @@ components:
       required: false
       schema:
         $ref: '#/components/schemas/UniversityCode'
+
+    week:
+      in: query
+      name: week
+      description: Week
+      required: true
+      schema:
+        $ref: '#/components/schemas/Week'
 
   securitySchemes:
     bearerAuth:
@@ -1951,3 +1993,15 @@ components:
         universityId:
           type: string
           format: uuid
+    RoomTimeIntervalInfo:
+      type: object
+      description: Room time interval info
+      required:
+        - room
+      properties:
+        room:
+          $ref: '#/components/schemas/RoomInfo'
+        timeIntervals:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeInterval'
