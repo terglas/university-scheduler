@@ -9,9 +9,11 @@ import com.example.universityscheduler.controller.TeacherController;
 import com.example.universityscheduler.controller.TestController;
 import com.example.universityscheduler.controller.UniversityController;
 import com.example.universityscheduler.exception.BadAuthorizeException;
+import com.example.universityscheduler.exception.BadRequestException;
 import com.example.universityscheduler.exception.ConflictException;
 import com.example.universityscheduler.exception.DataBaseRuntimeException;
 import com.example.universityscheduler.exception.ForbiddenException;
+import com.example.universityscheduler.exception.InternalException;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.rest.RestExceptionMapper;
 import com.example.universityscheduler.model.ApiResponseError;
@@ -51,15 +53,15 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @Order(100)
+    @Order(1000)
     public ResponseEntity<ApiResponseError> handleException(Exception e) {
         log.error("Exception", e);
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(mapper.toDto(e, HttpStatus.UNPROCESSABLE_ENTITY.value()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.toDto(e, HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
 
     @ExceptionHandler(ConflictException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    @Order(1000)
+    @Order(100)
     public ResponseEntity<ApiResponseError> handleException(ConflictException e) {
         log.error("Conflict exception", e);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(mapper.toDto(e, HttpStatus.CONFLICT.value()));
@@ -87,5 +89,21 @@ public class BaseExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiResponseError> handleException(ForbiddenException e) {
         log.error("Forbidden exception", e);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(mapper.toDto(e, HttpStatus.FORBIDDEN.value()));
+    }
+
+    @ExceptionHandler(InternalException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @Order(100)
+    public ResponseEntity<ApiResponseError> handleException(InternalException e) {
+        log.error("Internal server exception", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mapper.toDto(e, HttpStatus.INTERNAL_SERVER_ERROR.value()));
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @Order(100)
+    public ResponseEntity<ApiResponseError> handleException(BadRequestException e) {
+        log.error("Bad request exception", e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mapper.toDto(e, HttpStatus.BAD_REQUEST.value()));
     }
 }

@@ -1,6 +1,7 @@
 package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.EducationalProgram;
+import com.example.universityscheduler.exception.ConflictException;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.EducationalProgramMapper;
 import com.example.universityscheduler.model.PageParams;
@@ -116,7 +117,7 @@ public class EducationalProgramServiceImpl implements EducationalProgramService 
         val educationalProgram = educationalProgramRepository.findById(educationalProgramId)
                 .orElseThrow(() -> new NotFoundException(String.format("Educational program not found: %S", educationalProgramId)));
         if(educationalProgram.getSubjects().stream().anyMatch(subject -> subject.getId().equals(subjectId))) {
-            throw new IllegalArgumentException(String.format("Subject with id %S already exists in educational program with id %S", subjectId, educationalProgramId));
+            throw new ConflictException(String.format("Subject with id %S already exists in educational program with id %S", subjectId, educationalProgramId));
         }
         val subject = subjectRepository.findById(subjectId)
                 .orElseThrow(() -> new NotFoundException(String.format("Subject not found: %S", subjectId)));

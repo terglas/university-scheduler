@@ -1,6 +1,7 @@
 package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.Schedule;
+import com.example.universityscheduler.exception.BadRequestException;
 import com.example.universityscheduler.exception.ConflictException;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.ScheduleMapper;
@@ -57,7 +58,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (IntervalUtils.doesIntervalFit(timeInterval, teacherTimeIntervals) && IntervalUtils.doesIntervalFit(timeInterval, groupTimeInterval) && IntervalUtils.doesIntervalFit(timeInterval, roomTimeInterval)) {
             return scheduleRepository.save(schedule);
         }
-        // TODO custom exception
         throw new ConflictException("Schedule does not fit");
     }
 
@@ -94,8 +94,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<Schedule> findAll(List<SearchQuery> searchQueries, UUID universityId) {
-        // TODO implement pagination
-        //val pageable = PageRequest.of(pageParams.getPageCurrent() - 1, pageParams.getPageSize());
         if (!searchQueries.isEmpty()) {
             val query = SearchScheduleUtils.findAllCompoundSchedules(searchQueries, universityId);
             return scheduleRepository.findAll(query);
@@ -167,7 +165,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 return scheduleRepository.findByEducationalProgramId(id, pageable).getContent();
             */
             default:
-                throw new IllegalArgumentException("Unexpected value: " + type);
+                throw new BadRequestException("Unexpected value: " + type);
         }
     }
 }
