@@ -2,9 +2,12 @@ package com.example.universityscheduler.mapper.rest;
 
 import com.example.universityscheduler.domain.Room;
 import com.example.universityscheduler.model.RoomInfo;
+import com.example.universityscheduler.model.RoomTimeIntervalInfo;
+import com.example.universityscheduler.model.TimeInterval;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
 import java.util.UUID;
 
 @Mapper
@@ -15,4 +18,6 @@ public interface RoomRestMapper {
     RoomInfo toDto(Room room);
     @Mapping(target = "id", source = "roomId")
     Room toEntity(UUID roomId);
+
+    RoomTimeIntervalInfo toDto(Room room, List<TimeInterval> timeIntervals);
 }

@@ -1,12 +1,16 @@
 package com.example.universityscheduler.service.impl;
 
 import com.example.universityscheduler.domain.Room;
+import com.example.universityscheduler.domain.Schedule.Week;
 import com.example.universityscheduler.exception.NotFoundException;
 import com.example.universityscheduler.mapper.RoomMapper;
 import com.example.universityscheduler.model.PageParams;
+import com.example.universityscheduler.model.TimeInterval;
 import com.example.universityscheduler.repository.RoomRepository;
+import com.example.universityscheduler.repository.ScheduleRepository;
 import com.example.universityscheduler.service.RoomService;
 import com.example.universityscheduler.service.UniversityService;
+import com.example.universityscheduler.utils.IntervalUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +29,7 @@ public class RoomServiceImpl implements RoomService {
     private final UserAccountService userAccountService;
     private final UniversityService universityService;
     private final RoomMapper roomMapper;
+    private final ScheduleRepository scheduleRepository;
 
     @Override
     public Room save(Room room) {
@@ -71,6 +76,27 @@ public class RoomServiceImpl implements RoomService {
         }
         val university = universityService.findByCode(universityCode);
         return findAll(pageParams, university.getId());
+    }
+
+    @Override
+    public List<TimeInterval> findTimeIntervals(UUID id, Week week) {
+        val userAccount = userAccountService.getCurrentUser();
+        return findTimeIntervals(id, week, userAccount.getUniversity().getId());
+    }
+
+    @Override
+    public List<TimeInterval> findTimeIntervals(UUID id, Week week, UUID universityId) {
+        val room = findById(id, universityId);
+        return IntervalUtils.formInterval(scheduleRepository.findByRoomId(room.getId()), week);
+    }
+
+    @Override
+    public List<TimeInterval> findTimeIntervals(UUID id, Week week, String universityCode) {
+        if (universityCode == null) {
+            return findTimeIntervals(id, week);
+        }
+        val university = universityService.findByCode(universityCode);
+        return findTimeIntervals(id, week, university.getId());
     }
 
     @Override
