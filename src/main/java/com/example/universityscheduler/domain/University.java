@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@FieldNameConstants
 @Entity
 public class University {
 

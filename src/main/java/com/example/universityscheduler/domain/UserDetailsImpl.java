@@ -5,17 +5,19 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.Transient;
 import java.util.Collection;
 import java.util.Collections;
 
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
+    @Transient
     private final UserAccount userAccount;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //TODO realize Role
+        // TODO realize Role
         return Collections.singletonList(
                 new SimpleGrantedAuthority("USER"));
     }
