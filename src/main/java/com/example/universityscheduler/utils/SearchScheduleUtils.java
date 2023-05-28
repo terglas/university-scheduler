@@ -20,23 +20,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.universityscheduler.domain.Schedule.Fields.GROUPS;
+import static com.example.universityscheduler.domain.Schedule.Fields.ID;
+import static com.example.universityscheduler.domain.Schedule.Fields.ROOM;
+import static com.example.universityscheduler.domain.Schedule.Fields.SUBJECT;
+import static com.example.universityscheduler.domain.Schedule.Fields.TEACHER;
+import static com.example.universityscheduler.domain.Teacher.Fields.UNIVERSITY;
+
 @UtilityClass
 public class SearchScheduleUtils {
-    // TODO implement through metamodel
-    private static final String TEACHER_FIELD = "teacher";
-    private static final String GROUPS_FIELD = "groups";
-    private static final String SUBJECT_FIELD = "subject";
-    private static final String ROOM_FIELD = "room";
-    private static final String UNIVERSITY_FIELD = "university";
-    private static final String ID = "id";
 
     public Specification<Schedule> findAllCompoundSchedules(List<SearchQuery> searchQueries, UUID universityId) {
         return (root, query, criteriaBuilder) -> {
-            Join<Schedule, Teacher> teacherJoin = root.join(TEACHER_FIELD, JoinType.LEFT);
-            Join<Teacher, University> universityJoin = teacherJoin.join(UNIVERSITY_FIELD, JoinType.LEFT);
-            Join<Schedule, Group> groupJoin = root.join(GROUPS_FIELD, JoinType.LEFT);
-            Join<Schedule, Subject> subjectJoin = root.join(SUBJECT_FIELD, JoinType.LEFT);
-            Join<Schedule, Room> roomJoin = root.join(ROOM_FIELD, JoinType.LEFT);
+            Join<Schedule, Teacher> teacherJoin = root.join(TEACHER, JoinType.LEFT);
+            Join<Teacher, University> universityJoin = teacherJoin.join(UNIVERSITY, JoinType.LEFT);
+            Join<Schedule, Group> groupJoin = root.join(GROUPS, JoinType.LEFT);
+            Join<Schedule, Subject> subjectJoin = root.join(SUBJECT, JoinType.LEFT);
+            Join<Schedule, Room> roomJoin = root.join(ROOM, JoinType.LEFT);
             List<Predicate> predicates = new ArrayList<>();
 
             for (SearchQuery searchQuery : searchQueries) {
