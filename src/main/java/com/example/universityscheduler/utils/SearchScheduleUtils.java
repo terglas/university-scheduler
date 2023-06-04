@@ -52,6 +52,7 @@ public class SearchScheduleUtils {
             }
             val searchQueryPredicate = criteriaBuilder.or(predicates.toArray(new Predicate[0]));
             val universityIdPredicate = criteriaBuilder.equal(universityJoin.get(ID), universityId);
+            query.distinct(true);
             return criteriaBuilder.and(searchQueryPredicate, universityIdPredicate);
         };
     }
