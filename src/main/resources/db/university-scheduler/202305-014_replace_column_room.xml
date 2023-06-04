@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
-    <changeSet id="20230219153463-1" author="amiroxumbayev">
+    <changeSet id="20230219153463-2" author="amiroxumbayev">
         <preConditions>
             <tableExists tableName="schedule"/>
         </preConditions>

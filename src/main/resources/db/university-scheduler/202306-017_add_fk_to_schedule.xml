@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20230219153466-1" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="schedule_room_fk"/>
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseTableName="schedule" baseColumnNames="room_id"
+                                 referencedTableName="room" referencedColumnNames="id"
+                                 constraintName="schedule_room_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="schedule" constraintName="schedule_room_fk"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153466-2" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="schedule_room_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="schedule" indexName="schedule_room_idx" unique="false">
+            <column name="room_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="schedule_room_idx" tableName="schedule"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
