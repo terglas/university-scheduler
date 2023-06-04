@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20230219153465-1" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="university_ua_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="university" indexName="university_ua_idx" unique="false">
+            <column name="user_account_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="university_ua_idx" tableName="university"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-2" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="ep_university_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="educational_program" indexName="ep_university_idx" unique="false">
+            <column name="university_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="ep_university_idx" tableName="educational_program"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-3" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="subject_university_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="subject" indexName="subject_university_idx" unique="false">
+            <column name="university_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="subject_university_idx" tableName="subject"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-4" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="teacher_university_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="teacher" indexName="teacher_university_idx" unique="false">
+            <column name="university_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="teacher_university_idx" tableName="teacher"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-5" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="room_university_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="room" indexName="room_university_idx" unique="false">
+            <column name="university_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="room_university_idx" tableName="room"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-6" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="group_ep_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="group" indexName="group_ep_idx" unique="false">
+            <column name="educational_program_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="group_ep_idx" tableName="group"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-7" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="sep_ep_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="subject_educational_program" indexName="sep_ep_idx" unique="false">
+            <column name="educational_program_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="sep_ep_idx" tableName="subject_educational_program"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-8" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="sep_subject_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="subject_educational_program" indexName="sep_subject_idx" unique="false">
+            <column name="subject_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="sep_subject_idx" tableName="subject_educational_program"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-9" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="schedule_subject_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="schedule" indexName="schedule_subject_idx" unique="false">
+            <column name="subject_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="schedule_subject_idx" tableName="schedule"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-10" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="schedule_teacher_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="schedule" indexName="schedule_teacher_idx" unique="false">
+            <column name="teacher_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="schedule_teacher_idx" tableName="schedule"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-11" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="gs_group_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="group_schedule" indexName="gs_group_idx" unique="false">
+            <column name="group_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="gs_group_idx" tableName="group_schedule"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20230219153465-12" author="amiroxumbayev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="gs_schedule_idx"/>
+            </not>
+        </preConditions>
+        <createIndex tableName="group_schedule" indexName="gs_schedule_idx" unique="false">
+            <column name="schedule_id"/>
+        </createIndex>
+        <rollback>
+            <dropIndex indexName="gs_schedule_idx" tableName="group_schedule"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
