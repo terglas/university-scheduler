@@ -2055,6 +2055,9 @@ components:
         - deviceToken
         - groups
       properties:
+        id:
+          type: string
+          format: uuid
         deviceToken:
           type: string
         groups:
