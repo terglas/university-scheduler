@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20230219153469-1" author="amiroxumbayev">
+        <preConditions>
+            <not>
+                <tableExists tableName="notification_group"/>
+            </not>
+        </preConditions>
+        <createTable tableName="notification_group">
+            <column name="id" type = "uuid" defaultValue="uuid_generate_v4()" valueComputed="UUID()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="notification_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="group_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="notification_group" baseColumnNames="notification_id"
+                                 referencedTableName="notification" referencedColumnNames="id"
+                                 constraintName="ng_notification_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <addForeignKeyConstraint baseTableName="notification_group" baseColumnNames="group_id"
+                                 referencedTableName="group" referencedColumnNames="id"
+                                 constraintName="ng_group_fk" deferrable="false"
+                                 initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"/>
+        <rollback>
+            <dropTable tableName="notification_group"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
