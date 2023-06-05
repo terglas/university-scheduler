@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.universityscheduler.domain.Schedule.Fields.END_TIME;
 import static com.example.universityscheduler.domain.Schedule.Fields.GROUPS;
 import static com.example.universityscheduler.domain.Schedule.Fields.ID;
 import static com.example.universityscheduler.domain.Schedule.Fields.ROOM;
+import static com.example.universityscheduler.domain.Schedule.Fields.START_TIME;
 import static com.example.universityscheduler.domain.Schedule.Fields.SUBJECT;
 import static com.example.universityscheduler.domain.Schedule.Fields.TEACHER;
 import static com.example.universityscheduler.domain.Teacher.Fields.UNIVERSITY;
@@ -52,6 +54,7 @@ public class SearchScheduleUtils {
             }
             val searchQueryPredicate = criteriaBuilder.or(predicates.toArray(new Predicate[0]));
             val universityIdPredicate = criteriaBuilder.equal(universityJoin.get(ID), universityId);
+            query.orderBy(criteriaBuilder.asc(root.get(START_TIME)), criteriaBuilder.asc(root.get(END_TIME)));
             query.distinct(true);
             return criteriaBuilder.and(searchQueryPredicate, universityIdPredicate);
         };
