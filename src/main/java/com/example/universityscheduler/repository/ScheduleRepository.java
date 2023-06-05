@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,4 +31,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, UUID> {
     List<Schedule> findByRoomId(UUID roomId);
 
     List<Schedule> findAll(Specification<Schedule> specification);
+
+    @Query(name = "Schedule.findAllByStartTime", nativeQuery = true)
+    List<Schedule> findAllByStartTime(@Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime, @Param("week") String week);
 }
