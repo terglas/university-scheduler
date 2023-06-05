@@ -1570,6 +1570,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /notifications:
+    post:
+      summary: Register device token
+      operationId: registerDevice
+      tags:
+        - Notificationz
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationEvent'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationEvent'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   parameters:
     pageParams:
@@ -2015,3 +2048,17 @@ components:
           $ref: '#/components/schemas/Week'
         timeInterval:
           $ref: '#/components/schemas/TimeInterval'
+    NotificationEvent:
+      type: object
+      description: Notification event
+      required:
+        - deviceToken
+        - groups
+      properties:
+        deviceToken:
+          type: string
+        groups:
+          type: array
+          items:
+            type: string
+            format: uuid
