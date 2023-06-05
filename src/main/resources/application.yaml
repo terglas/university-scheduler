@@ -24,3 +24,11 @@ jwt:
 gcp:
   firebase:
     service-account: ${FIREBASE_SERVICE_ACCOUNT}
+
+scheduler:
+  fixedDelay: 60000
+
+notification:
+  time:
+    notifyTimeInMinutes: 10
+    timeSpreadInMinutes: 1
